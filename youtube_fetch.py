@@ -1,20 +1,3 @@
-#!/usr/bin/env python3
-"""
-youtube_fetch_simple.py
-
-Simpler, human-friendly script that:
-- stores channel info (including subscriber_count and next_page_token)
-- stores video rows with metrics
-
-Two tables:
-- channels (id PK) 
-- videos (id PK, channel_ref INTEGER -> channels.id)
-
-Fields captured per your request:
-Duration (seconds), Title, Views, Likes, View/Like ratio (views divided by likes),
-Comment count, Publishing date, Subscriber count (in channels table).
-"""
-
 import os
 import re
 import sqlite3
@@ -23,7 +6,7 @@ import argparse
 from typing import Optional, List
 
 API_KEY = os.getenv("YOUTUBE_API_KEY")
-DB_DEFAULT = "youtube_simple.db"
+DB_DEFAULT = "youtube_data.db"
 MAX_DEFAULT = 25
 
 YT_SEARCH = "https://www.googleapis.com/youtube/v3/search"
@@ -155,11 +138,11 @@ def fetch_and_store(api_key: str, db_file: str, channel_id: str, max_per_run: in
     cur = conn.cursor()
     inserted = 0
     skipped = 0
-    for it in items:
-        vid = it.get("id")
-        snip = it.get("snippet", {})
-        cd = it.get("contentDetails", {})
-        st = it.get("statistics", {})
+    for item in items:
+        vid = item.get("id")
+        snip = item.get("snippet", {})
+        cd = item.get("contentDetails", {})
+        st = item.get("statistics", {})
 
         title = snip.get("title", "")
         published = snip.get("publishedAt", "")

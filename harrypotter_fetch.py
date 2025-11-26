@@ -20,17 +20,19 @@ def init_db(conn):
                 patronus TEXT,
                 gender TEXT, 
                 age INTEGER, 
-                next_index INTEGER)
+                alternate_names TEXT)
                 """)
-    cur.execute("""CREATE TABLE IF NOT EXISTS character_mentions(
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                character_ref INTEGER, 
-                video_id TEXT,
-                mention_count INTEGER, 
-                alternate_names TEXT,
-                FOREIGN KEY (character_ref) REFERENCES chracters(id))"""
-                )
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS character_mentions(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        character_ref INTEGER, 
+        video_id TEXT,
+        mention_count INTEGER,
+        FOREIGN KEY (character_ref) REFERENCES characters(id)
+    )
+""")
     conn.commit() 
+
 #second function gets characters from api, gets full list of characters and turns them into python list 
 def get_hp_char(): 
     response = requests.get(hp_api_url)
@@ -67,9 +69,12 @@ def gather_store_hp(db_file, max_per_run = 25):
         inserted_rows += 1 
         conn.commit() 
     conn.close() 
-    print
     print(f"Added {inserted_rows} new characters to the database.")
     print("Run the file again to add 25 more until you reach 100.")
+
+if __name__ == "__main__":
+    gather_store_hp("hp_db.db", 25)
+
 
 
 

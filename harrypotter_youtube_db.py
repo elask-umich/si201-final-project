@@ -53,6 +53,13 @@ def create_final_schema(conn: sqlite3.Connection):
         age TEXT
     )
     """)
+    cur.execute("""CREATE TABLE IF NOT EXISTS character_mentions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                character_ref INTEGER, 
+                video_id TEXT, 
+                mention_count INTEGER, 
+                FOREIGN KEY (character_ref) REFERENCES characters(id)""")
+    
     conn.commit()
 
 def get_final_channel_id(conn: sqlite3.Connection, channel_id: str) -> Optional[int]:

@@ -161,16 +161,51 @@ def import_youtube_from_source(src_db_path: str, final_db_path: str, limit: int 
     final_conn.close()
 
 
-# ------------------ Partner/HP import (placeholder) ------------------
 
-def import_hp_placeholder(partner_db_path: str, final_db_path: str, limit: int) -> None:
+def import_hp_placeholder(hp_db_path: str, final_db_path: str, limit: int = 25): 
     """Placeholder for importing HP data from partner DB."""
+    #gets data from fetch harry potter!! so it copies 25 characters from the database into the final joined database. CHAT WE ARE MERGING!!!!
+    hp_conn = sqlite3.connect(hp_db_path)
+    final_conn = sqlite3.connect(final_db_path)
+    hp_cur = hp_conn.cursor() 
+    final_cur = final_conn.cursor() 
+    create_final_schema(final_conn)
+    hp_cur.execute("SELECT name, house, species, role, patronus, gender, age, alternative_names FROM characters")
+    all_hp_rows = hp_cur.fetchall() 
+    counter = 0 
+    for row in all_hp_rows: 
+        if counter >= limit: 
+            break 
+        name = row[0] 
+        final_cur.execute("SELECT id FROM characters WHERE name = ?", (name,))
+        existing = final_cur.fetchone() #starts checking for duplicate names 
+        if existing: #creates if scenario if the name is already present 
+            continue #continues to not include dcuplicate names hehehe
+        house = row[1]
+        species = row[2]
+        role = row[3]
+        patronus = row[4]
+        gender = row[5] 
+        age = row[6]
+        alt_names = row[7]
+        final_cur.execute("""INSERT INTO characters(name, house, species, role, patronus, gender, age, alt_names)VALUES(?,?,?,?,?,?,?,?)""", (name, house, species, role, patronus, gender, age, alt_names,)) 
+        final_conn.commit() 
+        counter += 1 
+    hp_conn.close()
+    final_conn.close() 
+    #safety printing confirmation, currently manifesting this stuff works please omg 
+    print(f"imported{counter} hp characters into combined base")
+    print("run until all copied into final")
+
+
+
+
     pass
 
 
 
 
-
+# ------------- calculations for both (placeholder start) ------------------
 
 
 def main():

@@ -209,6 +209,47 @@ def import_hp_placeholder(hp_db_path: str, final_db_path: str, limit: int = 25):
 
     pass
 
+def build_char_mentions(final_db_path: str, limit: int = 25):
+    #goes over the final combined base and finds yt videos from ytber where the title contains the hp char name - uses that to fill the char mentions table
+    conn = sqlite3.connect(final_db_path)
+    cur = conn.cursor() 
+    create_final_schema(conn)
+    cur.execute("SELECT id, name FROM characters")
+    characters = cur.fetchall() 
+    cur.execute("SELECT id, title FROM videos")
+    videos = cur.fetchall()
+    added = 0 
+    for char in characters: 
+        char_id = char[0]
+        char_name = char[1]
+        if char_name is None: 
+            continue 
+        char_name_lower = char_name.lower() 
+        for vid in videos: 
+            if added>=limit: 
+                break 
+            video_id_in_table= vid[0]
+            video_title = vid[1]
+            if video_title is None: 
+                continue 
+            title_lower = video_title.lower() 
+            if char_name_lower in title_lower: 
+                cur.execute(""" SELECT id FROM character_mentions WHERE character_ref = ? AND video_id = ? """, (char_id, video_id_in_table))
+                exists = cur.fetchone() 
+                if exists: 
+                    continue 
+                mention_count = 1 
+                cur.execute("""INSERT INTO character_mentions(character_ref, video_id, mention_count) VALUES(?,?,?)""", (char_id, video_id_in_table, mention_count))
+                conn.commit() 
+                added += 1 
+        if added >= limit: 
+            break
+    conn.close() 
+    print(f"added {added} new character mention rows")
+    print("run again to add to mention table")
+
+
+
 
 
 

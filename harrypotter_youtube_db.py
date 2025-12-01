@@ -254,7 +254,40 @@ def build_char_mentions(final_db_path: str, limit: int = 25):
 
 
 # ------------- calculations for both (placeholder start) ------------------
+def calc_character_popularity(final_db_path: str):
+#character title counter by mention and total views calculation thingie 
+    conn = sqlite3.connect(final_db_path)
+    cur = conn.cursor()
+    print("\n--- Character Popularity (Mentions + Total Views) ---\n")
+    cur.execute("""
+        SELECT 
+            characters.name,
+            COUNT(character_mentions.video_id) AS mention_count,
+            SUM(video_stats.view_count) AS total_views
+        FROM characters
+        LEFT JOIN character_mentions
+            ON characters.id = character_mentions.character_ref
+        LEFT JOIN videos
+            ON character_mentions.video_id = videos.id
+        LEFT JOIN video_stats
+            ON videos.id = video_stats.video_ref
+        GROUP BY characters.id
+        ORDER BY mention_count DESC
+    """)
 
+    rows = cur.fetchall()
+
+    for row in rows:
+        name = row[0]
+        mentions = row[1] if row[1] is not None else 0
+        views = row[2] if row[2] is not None else 0
+
+        print(f"Character: {name}")
+        print(f"  Mentions: {mentions}")
+        print(f"  Total Views: {views}")
+        print("")
+
+    conn.close()
 
 def main():
     p = argparse.ArgumentParser("final_db_builder")

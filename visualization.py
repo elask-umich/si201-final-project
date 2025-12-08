@@ -5,12 +5,12 @@ import numpy as np
 
 BAR_COLORS = [
     "red", "blue", "green", "purple", "orange",
-    "pink", "cyan", "brown", "yellow", "gray"
-]
-def plot_character_popularity_pie(db_path="combined.db"):
+    "pink", "cyan", "brown", "yellow", "gray"]
+
+def pie_harry_vs_rest(db_path="combined.db"):
     conn = sqlite3.connect(db_path)
     cur = conn.cursor()
-
+    
     cur.execute("""
         SELECT 
             characters.name,
@@ -25,39 +25,89 @@ def plot_character_popularity_pie(db_path="combined.db"):
         GROUP BY characters.id
         ORDER BY total_views DESC
     """)
-
+    
     rows = cur.fetchall()
     conn.close()
-
-    names = []
-    views = []
-
-    for row in rows:
-        name = row[0]
-        total_views = row[1]
-
-        if total_views is None:
+    
+    harry_views = 0
+    other_total = 0
+    
+    for name, views in rows:
+        if views is None:
             continue
-        if total_views < 1:
-            continue
-
-        names.append(name)
-        views.append(total_views)
-
-    colors_used = []
-    for i in range(len(names)):
-        colors_used.append(BAR_COLORS[i % len(BAR_COLORS)])
-    plt.figure(figsize=(10, 10))
-    plt.pie(views, labels=names, colors=colors_used, autopct="%1.1f%%", startangle=140)
-    plt.title("Harry Potter Character Popularity (% of Total Views)")
-
-    legend_labels = []
-    for i in range(len(names)):
-        legend_labels.append(f"{names[i]} ({colors_used[i]})")
-
-    plt.legend(legend_labels, title="Legend", loc="upper right", bbox_to_anchor=(1.2, 1))
+        if "harry potter" in name.lower():
+            harry_views = views
+        else:
+            other_total += views
+    
+    labels = ["Harry Potter", "All Other Characters"]
+    values = [harry_views, other_total]
+    colors = ["red", "gray"]
+    
+    plt.figure(figsize=(7,7))
+    plt.pie(values, labels=labels, autopct='%1.1f%%', colors=colors, startangle=140)
+    plt.title("Harry Potter vs. All Others (Total Views)")
     plt.tight_layout()
     plt.show()
+
+
+
+def pie_other_characters(db_path="combined.db"):
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT 
+            characters.name,
+            SUM(video_stats.view_count) AS total_views
+        FROM characters
+        LEFT JOIN character_mentions
+            ON characters.id = character_mentions.character_ref
+        LEFT JOIN videos
+            ON character_mentions.video_id = videos.id
+        LEFT JOIN video_stats
+            ON videos.id = video_stats.video_ref
+        WHERE characters.name NOT LIKE '%Harry Potter%'
+        GROUP BY characters.id
+        HAVING total_views >= 1
+        ORDER BY total_views DESC
+    """)
+    
+    rows = cur.fetchall()
+    conn.close()
+    
+    names = []
+    views = []
+    
+    for name, v in rows:
+        names.append(name)
+        views.append(v)
+    
+
+    colors = ['blue', 'green', 'purple', 'orange', 'yellow', 'pink',
+              'cyan', 'brown', 'gray', 'lime']
+
+    slice_colors = []
+    idx = 0
+    for _ in range(len(names)):
+        slice_colors.append(colors[idx % len(colors)])
+        idx += 1
+
+    plt.figure(figsize=(9,9))
+    plt.pie(
+        views,
+        labels=names,
+        autopct='%1.1f%%',
+        colors=slice_colors,
+        startangle=140,
+        pctdistance=0.8,     
+        labeldistance=1.1    
+    )
+    plt.title("Popularity of Other HP Characters (Total Views)")
+    plt.tight_layout()
+    plt.show()
+
+
 
 
 
@@ -80,39 +130,44 @@ def plot_character_title_mentions_bar(db_path="combined.db"):
     conn.close()
 
     names = []
-    counts = []
-
+    mentions = []
     for row in rows:
-        name = row[0]
+        char_name = row[0]
         count = row[1]
 
-        if count is None or count < 1:
-            continue
+        if count is not None and count >= 1:
+            names.append(char_name)
+            mentions.append(count)
 
-        names.append(name)
-        counts.append(count)
-    colors_used = []
-    for i in range(len(names)):
-        colors_used.append(BAR_COLORS[i % len(BAR_COLORS)])
-    plt.figure(figsize=(12, 6))
-    plt.bar(names, counts, color=colors_used)
+    base_colors = ['red', 'blue', 'green', 'orange', 'purple', 'cyan',
+                   'yellow', 'pink', 'brown', 'gray', 'olive', 'magenta']
+
+    colors = []
+    idx = 0
+    for _ in names:
+        colors.append(base_colors[idx])
+        idx = idx + 1
+        if idx == len(base_colors):
+            idx = 0
+
+    plt.figure(figsize=(14, 7))
+    plt.bar(names, mentions, color=colors)
 
     plt.ylabel("Mentions in Video Titles")
-    plt.title("HP Characters Mentioned in YouTube Titles")
+    plt.title("Harry Potter Characters Mentioned in YouTube Titles (Distinct Colors)")
 
-    max_val = max(counts)
-    step = 1
+    if len(mentions) > 0:
+        max_val = max(mentions)
+    else:
+        max_val = 0
+
+    step = 10
     plt.yticks(np.arange(0, max_val + step, step))
 
     plt.xticks(rotation=75, ha='right')
     plt.tight_layout()
-
-    legend_labels = []
-    for i in range(len(names)):
-        legend_labels.append(f"{names[i]} ({colors_used[i]})")
-
-    plt.legend(legend_labels, title="Legend", bbox_to_anchor=(1.03, 1), loc="upper left")
     plt.show()
 
-plot_character_popularity_pie("combined.db")
+pie_harry_vs_rest("combined.db")
+pie_other_characters("combined.db")
 plot_character_title_mentions_bar("combined.db")

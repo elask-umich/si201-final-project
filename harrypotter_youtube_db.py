@@ -227,47 +227,42 @@ def import_hp_placeholder(hp_db_path: str, final_db_path: str, limit: int = 25):
 
     pass
 
-def build_char_mentions(final_db_path: str, limit: int = 25):
-    #goes over the final combined base and finds yt videos from ytber where the title contains the hp char name - uses that to fill the char mentions table
+def build_char_mentions(final_db_path: str):
     conn = sqlite3.connect(final_db_path)
-    cur = conn.cursor() 
-    create_final_schema(conn)
+    cur = conn.cursor()
+    # Load characters + videos
     cur.execute("SELECT id, name FROM characters")
-    characters = cur.fetchall() 
+    characters = cur.fetchall()
     cur.execute("SELECT id, title FROM videos")
     videos = cur.fetchall()
-    added = 0 
-    for char in characters: 
-        char_id = char[0]
-        char_name = char[1]
-        if char_name is None: 
-            continue 
-        char_name_lower = char_name.lower() 
-        for vid in videos: 
-            if added>=limit: 
-                break 
-            video_id_in_table= vid[0]
-            video_title = vid[1]
-            if video_title is None: 
-                continue 
-            title_lower = video_title.lower() 
-            if char_name_lower in title_lower: 
-                cur.execute(""" SELECT id FROM character_mentions WHERE character_ref = ? AND video_id = ? """, (char_id, video_id_in_table))
-                exists = cur.fetchone() 
-                if exists: 
-                    continue 
-                mention_count = 1 
-                cur.execute("""INSERT INTO character_mentions(character_ref, video_id, mention_count) VALUES(?,?,?)""", (char_id, video_id_in_table, mention_count))
-                conn.commit() 
-                added += 1 
-        if added >= limit: 
-            break
-    conn.close() 
-    print(f"added {added} new character mention rows")
-    print("run again to add to mention table")
 
+    added = 0
 
+    for char_id, name in characters:
+        if not name:
+            continue
+        name_lower = name.lower()
+        for video_id, title in videos:
+            if not title:
+                continue
+            if name_lower in title.lower():
+                # Avoid duplicates
+                cur.execute("""
+                    SELECT id FROM character_mentions
+                    WHERE character_ref = ? AND video_id = ?
+                """, (char_id, video_id))
+                if cur.fetchone():
+                    continue
+                cur.execute("""
+                    INSERT INTO character_mentions(character_ref, video_id, mention_count)
+                    VALUES (?, ?, 1)
+                """, (char_id, video_id))
+                added += 1
 
+    conn.commit()
+    conn.close()
+
+    print(f"✓ character_mentions table updated ({added} new rows)")
 
 
 
@@ -309,7 +304,7 @@ def calc_character_popularity(final_db_path: str, filename: str = "character_pop
     print(f"Saved popularity results to {filename}")
 
 
-def calc_character_appearances_in_yt_videotitle(final_db_path: str, filename: str = "character_appearances.txt"):
+def calc_character_appearances_in_yt_videotitle(final_db_path: str):
     conn = sqlite3.connect(final_db_path)
     cur = conn.cursor()
 
@@ -324,68 +319,60 @@ def calc_character_appearances_in_yt_videotitle(final_db_path: str, filename: st
     results = []
 
     for char_id, name in characters:
-        count = 0
-        if name is None:
+        if not name:
             continue
-        name_lower = name.lower()
 
-        for _, title in videos:
-            if title and name_lower in title.lower():
-                count += 1
+        name_lower = name.lower()
+        count = sum(
+            1 for _, title in videos
+            if title and name_lower in title.lower()
+        )
 
         results.append((name, count))
 
-    # Sort by number of appearances, descending
     results.sort(key=lambda x: x[1], reverse=True)
-
-    # Write results to file
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write("=== Character Appearances in YouTube Video Titles ===\n\n")
-        for name, count in results:
-            f.write(f"{name}: {count} video title matches\n")
-
-    print(f"Saved title-appearance results to {filename}")
-
     return results
+
 
 # -------------------- Return Calc to TXT files --------------------
 
 def export_calculations_to_txt(final_db_path: str, output_file: str = "hp_stats.txt"):
-    """
-    Runs both HP + YT calculations and writes results to a .txt file.
-    """
+    conn = sqlite3.connect(final_db_path)
+    cur = conn.cursor()
+
+    # Popularity: mentions + total views
+    cur.execute("""
+        SELECT 
+            characters.name,
+            COUNT(character_mentions.video_id) AS mentions,
+            SUM(video_stats.view_count) AS total_views
+        FROM characters
+        LEFT JOIN character_mentions
+            ON characters.id = character_mentions.character_ref
+        LEFT JOIN videos
+            ON character_mentions.video_id = videos.id
+        LEFT JOIN video_stats
+            ON videos.id = video_stats.video_ref
+        GROUP BY characters.id
+        ORDER BY mentions DESC
+    """)
+
+    popularity_rows = cur.fetchall()
+    conn.close()
+
+    # Title appearance results
+    title_results = calc_character_appearances_in_yt_videotitle(final_db_path)
+
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write("--- Character Popularity (Mentions + Views) ---\n\n")
-        conn = sqlite3.connect(final_db_path)
-        cur = conn.cursor()
-        cur.execute("""
-            SELECT 
-                characters.name,
-                COUNT(character_mentions.video_id) AS mention_count,
-                SUM(video_stats.view_count) AS total_views
-            FROM characters
-            LEFT JOIN character_mentions
-                ON characters.id = character_mentions.character_ref
-            LEFT JOIN videos
-                ON character_mentions.video_id = videos.id
-            LEFT JOIN video_stats
-                ON videos.id = video_stats.video_ref
-            GROUP BY characters.id
-            ORDER BY mention_count DESC
-        """)
-        for name, mentions, views in cur.fetchall():
-            f.write(f"{name} — mentions: {mentions or 0}, views: {views or 0}\n")
+        f.write("=== CHARACTER POPULARITY (Mentions + Views) ===\n\n")
+        for name, mentions, views in popularity_rows:
+            f.write(f"{name} — mentions: {mentions or 0}, total views: {views or 0}\n")
 
-        f.write("\n\n--- Character Appearances in YouTube Titles ---\n\n")
-        conn.close()
+        f.write("\n\n=== CHARACTER NAME APPEARANCES IN VIDEO TITLES ===\n\n")
+        for name, count in title_results:
+            f.write(f"{name}: {count} title matches\n")
 
-        results = calc_character_appearances_in_yt_videotitle(final_db_path)
-        for name, count in results:
-            f.write(f"{name}: {count}\n")
-
-    print(f"\nExport complete → {output_file}\n")
-
-
+    print(f"Export complete → {output_file}")
 
 
 
@@ -398,6 +385,7 @@ def main():
     p.add_argument("--final", default="final.db", help="Final combined DB filename")
     p.add_argument("--limit", type=int, default=25, help="Max rows to import per run from each source (<=25)")
     p.add_argument("--import-hp", default=None, help="(optional) partner DB path to import HP data")
+    
     args = p.parse_args()
 
 
@@ -409,6 +397,8 @@ def main():
     if args.import_hp:
         import_hp_placeholder(args.import_hp, args.final, args.limit)
 
+    build_char_mentions(args.final)
+    
     export_calculations_to_txt(args.final, output_file="hp_stats.txt")
     print("All done! 'hp_stats.txt' has been generated.")
 

@@ -65,7 +65,8 @@ def gather_store_hp(db_file, max_per_run = 25):
         age = char.get("yearOfBirth")
         alt_names = json.dumps(char.get("alternate_names", []))
         cur.execute(""" INSERT INTO characters(
-                    name, house, species, role, patronus, gender, age, alternate_names) VALUES(?,?,?,?,?,?,?,?)""", (name, house, species, role, patronus, gender, age, alt_names))
+                    name, house, species, role, patronus, gender, age, alternate_names) VALUES(?,?,?,?,?,?,?,?)""", 
+                    (name, house, species, role, patronus, gender, age, alt_names))
         inserted_rows += 1 
         conn.commit() 
     conn.close() 
@@ -74,9 +75,4 @@ def gather_store_hp(db_file, max_per_run = 25):
 
 if __name__ == "__main__":
     gather_store_hp("hp_db.db", 25)
-
-
-
-
-
 

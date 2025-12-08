@@ -346,6 +346,8 @@ def calc_character_appearances_in_yt_videotitle(final_db_path: str, filename: st
 
     print(f"Saved title-appearance results to {filename}")
 
+    return results
+
 # -------------------- Return Calc to TXT files --------------------
 
 def export_calculations_to_txt(final_db_path: str, output_file: str = "hp_stats.txt"):

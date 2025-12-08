@@ -268,40 +268,57 @@ def build_char_mentions(final_db_path: str):
 
 # ------------- calculations for both (placeholder start) ------------------
 
-def calc_character_popularity(final_db_path: str, filename: str = "character_popularity.txt"):
+def calc_character_popularity(final_db_path: str):
+    """
+    Counts how many YouTube videos mention each Harry Potter character in the title,
+    and sums the view_count for those videos.
+    """
     conn = sqlite3.connect(final_db_path)
     cur = conn.cursor()
 
-    cur.execute("""
-        SELECT 
-            characters.name,
-            COUNT(character_mentions.video_id) AS mention_count,
-            SUM(video_stats.view_count) AS total_views
-        FROM characters
-        LEFT JOIN character_mentions
-            ON characters.id = character_mentions.character_ref
-        LEFT JOIN videos
-            ON character_mentions.video_id = videos.id
-        LEFT JOIN video_stats
-            ON videos.id = video_stats.video_ref
-        GROUP BY characters.id
-        ORDER BY mention_count DESC
-    """)
+    # Get all HP characters
+    cur.execute("SELECT id, name FROM characters")
+    characters = cur.fetchall()
 
-    rows = cur.fetchall()
+    results = {}
+
+    for char_id, name in characters:
+        if not name:
+            continue
+
+        name_lower = f"%{name.lower()}%"
+
+        # Find all video IDs where the title contains this character's name
+        cur.execute("""
+            SELECT v.id
+            FROM videos v
+            WHERE lower(v.title) LIKE ?
+        """, (name_lower,))
+        matching_videos = cur.fetchall()
+
+        # Count how many titles mention the character
+        mention_count = len(matching_videos)
+
+        # Sum up total views from video_stats
+        total_views = 0
+        for (vid_id,) in matching_videos:
+            cur.execute("""
+                SELECT view_count
+                FROM video_stats
+                WHERE video_ref = ?
+            """, (vid_id,))
+            stat = cur.fetchone()
+            if stat and stat[0]:
+                total_views += stat[0]
+
+        results[name] = {
+            "mentions": mention_count,
+            "views": total_views
+        }
+
     conn.close()
+    return results
 
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write("=== Character Popularity (Mentions + Total Views) ===\n\n")
-        for row in rows:
-            name = row[0]
-            mentions = row[1] or 0
-            views = row[2] or 0
-            f.write(f"{name}\n")
-            f.write(f"  Mentions: {mentions}\n")
-            f.write(f"  Total Views: {views}\n\n")
-
-    print(f"Saved popularity results to {filename}")
 
 
 def calc_character_appearances_in_yt_videotitle(final_db_path: str):
@@ -336,70 +353,46 @@ def calc_character_appearances_in_yt_videotitle(final_db_path: str):
 
 # -------------------- Return Calc to TXT files --------------------
 
-def export_calculations_to_txt(final_db_path: str, output_file: str = "hp_stats.txt"):
-    conn = sqlite3.connect(final_db_path)
-    cur = conn.cursor()
-
-    # Popularity: mentions + total views
-    cur.execute("""
-        SELECT 
-            characters.name,
-            COUNT(character_mentions.video_id) AS mentions,
-            SUM(video_stats.view_count) AS total_views
-        FROM characters
-        LEFT JOIN character_mentions
-            ON characters.id = character_mentions.character_ref
-        LEFT JOIN videos
-            ON character_mentions.video_id = videos.id
-        LEFT JOIN video_stats
-            ON videos.id = video_stats.video_ref
-        GROUP BY characters.id
-        ORDER BY mentions DESC
-    """)
-
-    popularity_rows = cur.fetchall()
-    conn.close()
-
-    # Title appearance results
-    title_results = calc_character_appearances_in_yt_videotitle(final_db_path)
+def export_calculations_to_txt(db_path="combined.db", output_file="hp_stats.txt"):
+    conn = sqlite3.connect(db_path)
+    stats = calc_character_popularity(db_path)
 
     with open(output_file, "w", encoding="utf-8") as f:
-        f.write("=== CHARACTER POPULARITY (Mentions + Views) ===\n\n")
-        for name, mentions, views in popularity_rows:
-            f.write(f"{name} — mentions: {mentions or 0}, total views: {views or 0}\n")
+        for name, info in stats.items():
+            f.write(f"{name}\n")
+            f.write(f"  Mentions in video titles: {info['mentions']}\n")
+            f.write(f"  Total views of those videos: {info['views']}\n\n")
 
-        f.write("\n\n=== CHARACTER NAME APPEARANCES IN VIDEO TITLES ===\n\n")
-        for name, count in title_results:
-            f.write(f"{name}: {count} title matches\n")
-
-    print(f"Export complete → {output_file}")
+    conn.close()
+    print(f"TXT generated: {output_file}")
 
 
 
 
-# ------------------ Main script execution ------------------
+
+# ------------------ Main script ------------------
 
 def main():
-    p = argparse.ArgumentParser("final_db_builder")
-    p.add_argument("--youtube-src", required=True, help="Path to teammate's youtube_db.db")
-    p.add_argument("--final", default="final.db", help="Final combined DB filename")
-    p.add_argument("--limit", type=int, default=25, help="Max rows to import per run from each source (<=25)")
-    p.add_argument("--import-hp", default=None, help="(optional) partner DB path to import HP data")
-    
-    args = p.parse_args()
+    import argparse
 
+    DB_PATH = "combined.db"
+
+    p = argparse.ArgumentParser("combined builder")
+    p.add_argument("--youtube-src", required=True)
+    p.add_argument("--import-hp", default=None)
+    p.add_argument("--limit", type=int, default=25)
+    args = p.parse_args()
 
     if args.limit < 1 or args.limit > 25:
         raise SystemExit("limit must be between 1 and 25")
 
-    import_youtube_from_source(args.youtube_src, args.final, args.limit)
+    import_youtube_from_source(args.youtube_src, DB_PATH, args.limit)
 
     if args.import_hp:
-        import_hp_placeholder(args.import_hp, args.final, args.limit)
+        import_hp_placeholder(args.import_hp, DB_PATH, args.limit)
 
-    build_char_mentions(args.final)
-    
-    export_calculations_to_txt(args.final, output_file="hp_stats.txt")
+    export_calculations_to_txt(DB_PATH, "hp_stats.txt")
+    build_char_mentions(DB_PATH)
     print("All done! 'hp_stats.txt' has been generated.")
 
 

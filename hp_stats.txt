@@ -1,0 +1,206 @@
+--- Character Popularity (Mentions + Views) ---
+
+Harry Potter — mentions: 0, views: 0
+Hermione Granger — mentions: 0, views: 0
+Ron Weasley — mentions: 0, views: 0
+Draco Malfoy — mentions: 0, views: 0
+Minerva McGonagall — mentions: 0, views: 0
+Cedric Diggory — mentions: 0, views: 0
+Cho Chang — mentions: 0, views: 0
+Severus Snape — mentions: 0, views: 0
+Rubeus Hagrid — mentions: 0, views: 0
+Neville Longbottom — mentions: 0, views: 0
+Luna Lovegood — mentions: 0, views: 0
+Ginny Weasley — mentions: 0, views: 0
+Sirius Black — mentions: 0, views: 0
+Remus Lupin — mentions: 0, views: 0
+Arthur Weasley — mentions: 0, views: 0
+Bellatrix Lestrange — mentions: 0, views: 0
+Lord Voldemort — mentions: 0, views: 0
+Horace Slughorn — mentions: 0, views: 0
+Kingsley Shacklebolt — mentions: 0, views: 0
+Dolores Umbridge — mentions: 0, views: 0
+Lucius Malfoy — mentions: 0, views: 0
+Vincent Crabbe — mentions: 0, views: 0
+Mr Crabbe — mentions: 0, views: 0
+Gregory Goyle — mentions: 0, views: 0
+Mr Goyle — mentions: 0, views: 0
+Mrs Norris — mentions: 0, views: 0
+Argus Filch — mentions: 0, views: 0
+Vernon Dursley — mentions: 0, views: 0
+Petunia Dursley — mentions: 0, views: 0
+Dudley Dursley — mentions: 0, views: 0
+Boa constrictor — mentions: 0, views: 0
+Lily Potter — mentions: 0, views: 0
+James Potter — mentions: 0, views: 0
+Albus Dumbledore — mentions: 0, views: 0
+Fawkes — mentions: 0, views: 0
+Madam Pomfrey — mentions: 0, views: 0
+Mrs Figg — mentions: 0, views: 0
+Marge Dursley — mentions: 0, views: 0
+Ripper — mentions: 0, views: 0
+Yvonne — mentions: 0, views: 0
+Piers Polkiss — mentions: 0, views: 0
+Dennis — mentions: 0, views: 0
+Malcolm — mentions: 0, views: 0
+Gordon — mentions: 0, views: 0
+Miranda Gaushawk — mentions: 0, views: 0
+Bathilda Bagshot — mentions: 0, views: 0
+Adalbert Waffling — mentions: 0, views: 0
+Emeric Switch — mentions: 0, views: 0
+Phyllida Spore — mentions: 0, views: 0
+Arsenius Jigger — mentions: 0, views: 0
+Newt Scamander — mentions: 0, views: 0
+Quentin Trimble — mentions: 0, views: 0
+Tom — mentions: 0, views: 0
+Doris Crockford — mentions: 0, views: 0
+Quirinus Quirrel — mentions: 0, views: 0
+Griphook — mentions: 0, views: 0
+Madam Malkin — mentions: 0, views: 0
+Vindictus Viridian — mentions: 0, views: 0
+Garrick Ollivander — mentions: 0, views: 0
+Hedwig — mentions: 0, views: 0
+Trevor — mentions: 0, views: 0
+Hermes — mentions: 0, views: 0
+Errol — mentions: 0, views: 0
+Pigwidgeon — mentions: 0, views: 0
+Molly Weasley — mentions: 0, views: 0
+Percy Weasley — mentions: 0, views: 0
+Fred Weasley — mentions: 0, views: 0
+George Weasley — mentions: 0, views: 0
+Lee Jordan — mentions: 0, views: 0
+Bill Weasley — mentions: 0, views: 0
+Charlie Weasley — mentions: 0, views: 0
+Fat Friar — mentions: 0, views: 0
+Peeves — mentions: 0, views: 0
+Hannah Abbott — mentions: 0, views: 0
+Susan Bones — mentions: 0, views: 0
+Terry Boot — mentions: 0, views: 0
+Mandy Brocklehurst — mentions: 0, views: 0
+Lavender Brown — mentions: 0, views: 0
+Millicent Bulstrode — mentions: 0, views: 0
+Justin Finch-Fletchley — mentions: 0, views: 0
+Seamus Finnigan — mentions: 0, views: 0
+Mrs Finnigan — mentions: 0, views: 0
+Mr Finnigan — mentions: 0, views: 0
+Morag MacDougal — mentions: 0, views: 0
+Lily Moon — mentions: 0, views: 0
+Theodore Nott — mentions: 0, views: 0
+Mr Nott — mentions: 0, views: 0
+Pansy Parkinson — mentions: 0, views: 0
+Parvati Patil — mentions: 0, views: 0
+Padma Patil — mentions: 0, views: 0
+Sally-Anne Perks — mentions: 0, views: 0
+Lisa Turpin — mentions: 0, views: 0
+Blaise Zabini — mentions: 0, views: 0
+Nearly Headless Nick — mentions: 0, views: 0
+Bloody Baron — mentions: 0, views: 0
+The Wailing Widow — mentions: 0, views: 0
+Fat Lady — mentions: 0, views: 0
+Pomona Sprout — mentions: 0, views: 0
+Cuthbert Binns — mentions: 0, views: 0
+Emeric the Evil — mentions: 0, views: 0
+
+
+--- Character Appearances in YouTube Titles ---
+
+Harry Potter: 123
+Tom: 2
+Draco Malfoy: 1
+Severus Snape: 1
+Rubeus Hagrid: 1
+Neville Longbottom: 1
+Bellatrix Lestrange: 1
+Horace Slughorn: 1
+James Potter: 1
+Newt Scamander: 1
+Hermione Granger: 0
+Ron Weasley: 0
+Minerva McGonagall: 0
+Cedric Diggory: 0
+Cho Chang: 0
+Luna Lovegood: 0
+Ginny Weasley: 0
+Sirius Black: 0
+Remus Lupin: 0
+Arthur Weasley: 0
+Lord Voldemort: 0
+Kingsley Shacklebolt: 0
+Dolores Umbridge: 0
+Lucius Malfoy: 0
+Vincent Crabbe: 0
+Mr Crabbe: 0
+Gregory Goyle: 0
+Mr Goyle: 0
+Mrs Norris: 0
+Argus Filch: 0
+Vernon Dursley: 0
+Petunia Dursley: 0
+Dudley Dursley: 0
+Boa constrictor: 0
+Lily Potter: 0
+Albus Dumbledore: 0
+Fawkes: 0
+Madam Pomfrey: 0
+Mrs Figg: 0
+Marge Dursley: 0
+Ripper: 0
+Yvonne: 0
+Piers Polkiss: 0
+Dennis: 0
+Malcolm: 0
+Gordon: 0
+Miranda Gaushawk: 0
+Bathilda Bagshot: 0
+Adalbert Waffling: 0
+Emeric Switch: 0
+Phyllida Spore: 0
+Arsenius Jigger: 0
+Quentin Trimble: 0
+Doris Crockford: 0
+Quirinus Quirrel: 0
+Griphook: 0
+Madam Malkin: 0
+Vindictus Viridian: 0
+Garrick Ollivander: 0
+Hedwig: 0
+Trevor: 0
+Hermes: 0
+Errol: 0
+Pigwidgeon: 0
+Molly Weasley: 0
+Percy Weasley: 0
+Fred Weasley: 0
+George Weasley: 0
+Lee Jordan: 0
+Bill Weasley: 0
+Charlie Weasley: 0
+Fat Friar: 0
+Peeves: 0
+Hannah Abbott: 0
+Susan Bones: 0
+Terry Boot: 0
+Mandy Brocklehurst: 0
+Lavender Brown: 0
+Millicent Bulstrode: 0
+Justin Finch-Fletchley: 0
+Seamus Finnigan: 0
+Mrs Finnigan: 0
+Mr Finnigan: 0
+Morag MacDougal: 0
+Lily Moon: 0
+Theodore Nott: 0
+Mr Nott: 0
+Pansy Parkinson: 0
+Parvati Patil: 0
+Padma Patil: 0
+Sally-Anne Perks: 0
+Lisa Turpin: 0
+Blaise Zabini: 0
+Nearly Headless Nick: 0
+Bloody Baron: 0
+The Wailing Widow: 0
+Fat Lady: 0
+Pomona Sprout: 0
+Cuthbert Binns: 0
+Emeric the Evil: 0

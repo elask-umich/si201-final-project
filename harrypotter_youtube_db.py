@@ -409,7 +409,8 @@ def main():
     if args.import_hp:
         import_hp_placeholder(args.import_hp, args.final, args.limit)
 
-
+    export_calculations_to_txt(args.final, output_file="hp_stats.txt")
+    print("All done! 'hp_stats.txt' has been generated.")
 
 
 if __name__ == '__main__':

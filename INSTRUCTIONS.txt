@@ -3,7 +3,7 @@
 
 # You will open a bash terminal and run the command listed below
 # DO SO ONLY IF you need to 1. Generate the hp_stats.txt 2. Generate the character_appearances.txt 
-# and/or need to run and add to 3. the final combined.db database.
+# and/or need to run and add lines to 3. the final combined.db database.
 
 
-# type - python harrypotter_youtube_db.py --youtube-src youtube_db.db --import-hp hp_db.db --final combined.db --limit 25
+# type - python harrypotter_youtube_db.py --youtube-src youtube_db.db --import-hp hp_db.db --limit 25

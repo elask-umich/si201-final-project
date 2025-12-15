@@ -7,3 +7,6 @@
 
 
 # type - python harrypotter_youtube_db.py --youtube-src youtube_db.db --import-hp hp_db.db --limit 25
+
+
+# To see our visualizations, please open the visualization.py file and run it as is

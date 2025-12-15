@@ -1,500 +1,400 @@
-Harry Potter
-  Mentions in video titles: 143
-  Total views of those videos: 19409838
-
-Hermione Granger
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Ron Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Draco Malfoy
-  Mentions in video titles: 1
-  Total views of those videos: 59290
-
-Minerva McGonagall
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Cedric Diggory
-  Mentions in video titles: 1
-  Total views of those videos: 56919
-
-Cho Chang
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Severus Snape
-  Mentions in video titles: 1
-  Total views of those videos: 107907
-
-Rubeus Hagrid
-  Mentions in video titles: 1
-  Total views of those videos: 126554
-
-Neville Longbottom
-  Mentions in video titles: 1
-  Total views of those videos: 19186
-
-Luna Lovegood
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Ginny Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Sirius Black
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Remus Lupin
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Arthur Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Bellatrix Lestrange
-  Mentions in video titles: 1
-  Total views of those videos: 107826
-
-Lord Voldemort
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Horace Slughorn
-  Mentions in video titles: 1
-  Total views of those videos: 102027
-
-Kingsley Shacklebolt
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Dolores Umbridge
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Lucius Malfoy
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Vincent Crabbe
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Crabbe
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Gregory Goyle
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Goyle
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mrs Norris
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Argus Filch
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Vernon Dursley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Petunia Dursley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Dudley Dursley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Boa constrictor
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Lily Potter
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-James Potter
-  Mentions in video titles: 1
-  Total views of those videos: 21579
+Adalbert Waffling
+  Mentions: 0
+  Views: 0
 
 Albus Dumbledore
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
 
-Fawkes
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Madam Pomfrey
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mrs Figg
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Marge Dursley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Ripper
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Yvonne
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Piers Polkiss
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Dennis
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Malcolm
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Gordon
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Miranda Gaushawk
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Bathilda Bagshot
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Adalbert Waffling
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Emeric Switch
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Phyllida Spore
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Argus Filch
+  Mentions: 0
+  Views: 0
 
 Arsenius Jigger
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
 
-Newt Scamander
-  Mentions in video titles: 1
-  Total views of those videos: 30868
+Arthur Weasley
+  Mentions: 0
+  Views: 0
 
-Quentin Trimble
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Bathilda Bagshot
+  Mentions: 0
+  Views: 0
 
-Tom
-  Mentions in video titles: 2
-  Total views of those videos: 59424
-
-Doris Crockford
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Quirinus Quirrel
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Griphook
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Madam Malkin
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Vindictus Viridian
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Garrick Ollivander
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Hedwig
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Trevor
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Hermes
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Errol
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Pigwidgeon
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Molly Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Percy Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Fred Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-George Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Lee Jordan
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Bellatrix Lestrange
+  Mentions: 0
+  Views: 0
 
 Bill Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Charlie Weasley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Fat Friar
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Peeves
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Hannah Abbott
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Susan Bones
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Terry Boot
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mandy Brocklehurst
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Lavender Brown
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Millicent Bulstrode
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Justin Finch-Fletchley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Seamus Finnigan
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mrs Finnigan
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Finnigan
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Morag MacDougal
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Lily Moon
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Theodore Nott
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Nott
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Pansy Parkinson
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Parvati Patil
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Padma Patil
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Sally-Anne Perks
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Lisa Turpin
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
 
 Blaise Zabini
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Nearly Headless Nick
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
 
 Bloody Baron
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
 
-The Wailing Widow
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Boa constrictor
+  Mentions: 0
+  Views: 0
 
-Fat Lady
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Cedric Diggory
+  Mentions: 0
+  Views: 0
 
-Pomona Sprout
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Charlie Weasley
+  Mentions: 0
+  Views: 0
+
+Cho Chang
+  Mentions: 0
+  Views: 0
 
 Cuthbert Binns
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
+
+Dennis
+  Mentions: 0
+  Views: 0
+
+Dolores Umbridge
+  Mentions: 0
+  Views: 0
+
+Doris Crockford
+  Mentions: 0
+  Views: 0
+
+Draco Malfoy
+  Mentions: 0
+  Views: 0
+
+Dudley Dursley
+  Mentions: 0
+  Views: 0
+
+Emeric Switch
+  Mentions: 0
+  Views: 0
 
 Emeric the Evil
-  Mentions in video titles: 0
-  Total views of those videos: 0
+  Mentions: 0
+  Views: 0
 
-Uric the Oddball
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Errol
+  Mentions: 0
+  Views: 0
 
-Filius Flitwick
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Fat Friar
+  Mentions: 0
+  Views: 0
 
-Madam Hooch
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Fat Lady
+  Mentions: 0
+  Views: 0
 
-Oliver Wood
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Fawkes
+  Mentions: 0
+  Views: 0
 
-Gregory the Smarmy
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Fred Weasley
+  Mentions: 0
+  Views: 0
 
-Wizard Baruffio
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Garrick Ollivander
+  Mentions: 0
+  Views: 0
 
-Angelina Johnson
-  Mentions in video titles: 0
-  Total views of those videos: 0
+George Weasley
+  Mentions: 0
+  Views: 0
 
-Marcus Flint
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Ginny Weasley
+  Mentions: 0
+  Views: 0
 
-Alicia Spinet
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Gordon
+  Mentions: 0
+  Views: 0
 
-Katie Bell
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Gregory Goyle
+  Mentions: 0
+  Views: 0
 
-Adrian Pucey
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Griphook
+  Mentions: 0
+  Views: 0
 
-Miles Bletchley
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Hannah Abbott
+  Mentions: 0
+  Views: 0
 
-Terence Higgs
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Harry Potter
+  Mentions: 100
+  Views: 12886917
 
-Fang
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Hedwig
+  Mentions: 0
+  Views: 0
 
-Fluffy
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Hermes
+  Mentions: 0
+  Views: 0
 
-Nicolas Flamel
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Hermione Granger
+  Mentions: 0
+  Views: 0
 
-Gellert Grindelwald
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Horace Slughorn
+  Mentions: 0
+  Views: 0
 
-Norberta
-  Mentions in video titles: 0
-  Total views of those videos: 0
+James Potter
+  Mentions: 0
+  Views: 0
 
-Ronan
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Justin Finch-Fletchley
+  Mentions: 0
+  Views: 0
 
-Bane
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Kingsley Shacklebolt
+  Mentions: 0
+  Views: 0
 
-Firenze
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Lavender Brown
+  Mentions: 0
+  Views: 0
 
-The Giant Squid
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Lee Jordan
+  Mentions: 0
+  Views: 0
 
-Murcus
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Lily Moon
+  Mentions: 0
+  Views: 0
 
-Elfrick the Eager
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Lily Potter
+  Mentions: 0
+  Views: 0
 
-Perenelle Flamel
-  Mentions in video titles: 0
-  Total views of those videos: 0
+Lisa Turpin
+  Mentions: 0
+  Views: 0
+
+Lord Voldemort
+  Mentions: 0
+  Views: 0
+
+Lucius Malfoy
+  Mentions: 0
+  Views: 0
+
+Luna Lovegood
+  Mentions: 0
+  Views: 0
+
+Madam Malkin
+  Mentions: 0
+  Views: 0
+
+Madam Pomfrey
+  Mentions: 0
+  Views: 0
+
+Malcolm
+  Mentions: 0
+  Views: 0
+
+Mandy Brocklehurst
+  Mentions: 0
+  Views: 0
+
+Marge Dursley
+  Mentions: 0
+  Views: 0
+
+Millicent Bulstrode
+  Mentions: 0
+  Views: 0
+
+Minerva McGonagall
+  Mentions: 0
+  Views: 0
+
+Miranda Gaushawk
+  Mentions: 0
+  Views: 0
+
+Molly Weasley
+  Mentions: 0
+  Views: 0
+
+Morag MacDougal
+  Mentions: 0
+  Views: 0
+
+Mr Crabbe
+  Mentions: 0
+  Views: 0
+
+Mr Finnigan
+  Mentions: 0
+  Views: 0
+
+Mr Goyle
+  Mentions: 0
+  Views: 0
+
+Mr Nott
+  Mentions: 0
+  Views: 0
+
+Mrs Figg
+  Mentions: 0
+  Views: 0
+
+Mrs Finnigan
+  Mentions: 0
+  Views: 0
+
+Mrs Norris
+  Mentions: 0
+  Views: 0
+
+Nearly Headless Nick
+  Mentions: 0
+  Views: 0
+
+Neville Longbottom
+  Mentions: 0
+  Views: 0
+
+Newt Scamander
+  Mentions: 0
+  Views: 0
+
+Padma Patil
+  Mentions: 0
+  Views: 0
+
+Pansy Parkinson
+  Mentions: 0
+  Views: 0
+
+Parvati Patil
+  Mentions: 0
+  Views: 0
+
+Peeves
+  Mentions: 0
+  Views: 0
+
+Percy Weasley
+  Mentions: 0
+  Views: 0
+
+Petunia Dursley
+  Mentions: 0
+  Views: 0
+
+Phyllida Spore
+  Mentions: 0
+  Views: 0
+
+Piers Polkiss
+  Mentions: 0
+  Views: 0
+
+Pigwidgeon
+  Mentions: 0
+  Views: 0
+
+Pomona Sprout
+  Mentions: 0
+  Views: 0
+
+Quentin Trimble
+  Mentions: 0
+  Views: 0
+
+Quirinus Quirrel
+  Mentions: 0
+  Views: 0
+
+Remus Lupin
+  Mentions: 0
+  Views: 0
+
+Ripper
+  Mentions: 0
+  Views: 0
+
+Ron Weasley
+  Mentions: 0
+  Views: 0
+
+Rubeus Hagrid
+  Mentions: 0
+  Views: 0
+
+Sally-Anne Perks
+  Mentions: 0
+  Views: 0
+
+Seamus Finnigan
+  Mentions: 0
+  Views: 0
+
+Severus Snape
+  Mentions: 0
+  Views: 0
+
+Sirius Black
+  Mentions: 0
+  Views: 0
+
+Susan Bones
+  Mentions: 0
+  Views: 0
+
+Terry Boot
+  Mentions: 0
+  Views: 0
+
+The Wailing Widow
+  Mentions: 0
+  Views: 0
+
+Theodore Nott
+  Mentions: 0
+  Views: 0
+
+Tom
+  Mentions: 0
+  Views: 0
+
+Trevor
+  Mentions: 0
+  Views: 0
+
+Vernon Dursley
+  Mentions: 0
+  Views: 0
+
+Vincent Crabbe
+  Mentions: 0
+  Views: 0
+
+Vindictus Viridian
+  Mentions: 0
+  Views: 0
+
+Yvonne
+  Mentions: 0
+  Views: 0
 

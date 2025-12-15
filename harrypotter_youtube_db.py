@@ -1,12 +1,587 @@
 
 import sqlite3
 import argparse
+import os
 from typing import List, Dict, Optional
 
-# ------------------ Helper DB functions ------------------
+
+
+# def create_final_schema(conn: sqlite3.Connection):
+#     cur = conn.cursor()
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS channels (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         channel_id TEXT UNIQUE,
+#         title TEXT,
+#         subscriber_count INTEGER
+#     )
+#     """)
+
+#     cur.execute("""
+#         CREATE TABLE IF NOT EXISTS videos (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         video_id TEXT UNIQUE,
+#         channel_ref INTEGER,
+#         title TEXT,
+#         duration_seconds INTEGER,
+#         published_at TEXT,
+#         FOREIGN KEY(channel_ref) REFERENCES channels(id)
+#     )
+#     """)
+
+#     cur.execute("""
+#         CREATE TABLE IF NOT EXISTS video_stats (
+#         video_ref INTEGER PRIMARY KEY,
+#         view_count INTEGER,
+#         like_count INTEGER,
+#         comment_count INTEGER,
+#         view_like_ratio REAL,
+#         FOREIGN KEY(video_ref) REFERENCES videos(id)
+#     )
+#     """)
+
+#     cur.execute("""
+#         CREATE TABLE IF NOT EXISTS characters (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         character_id TEXT UNIQUE,
+#         name TEXT,
+#         house TEXT,
+#         alt_names TEXT,
+#         species TEXT,
+#         role TEXT,
+#         patronus TEXT,
+#         gender TEXT,
+#         age TEXT
+#     )
+#     """)
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS character_mentions (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         character_ref INTEGER,
+#         video_id INTEGER,
+#         mention_count INTEGER,
+#         FOREIGN KEY(character_ref) REFERENCES characters(id),
+#         FOREIGN KEY(video_id) REFERENCES videos(id)
+#     )
+#     """)
+    
+#     conn.commit()
+
+# def create_final_schema(conn: sqlite3.Connection):
+#     cur = conn.cursor()
+
+#     # ------------------ YouTube tables ------------------
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS channels (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         channel_id TEXT UNIQUE,
+#         title TEXT,
+#         subscriber_count INTEGER
+#     )
+#     """)
+
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS videos (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         video_id TEXT UNIQUE,
+#         channel_ref INTEGER,
+#         title TEXT,
+#         duration_seconds INTEGER,
+#         published_at TEXT,
+#         FOREIGN KEY(channel_ref) REFERENCES channels(id)
+#     )
+#     """)
+
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS video_stats (
+#         video_ref INTEGER PRIMARY KEY,
+#         view_count INTEGER,
+#         like_count INTEGER,
+#         comment_count INTEGER,
+#         view_like_ratio REAL,
+#         FOREIGN KEY(video_ref) REFERENCES videos(id)
+#     )
+#     """)
+
+#     # ------------------ HP lookup tables ------------------
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS houses (
+#         id INTEGER PRIMARY KEY,
+#         name TEXT UNIQUE
+#     )
+#     """)
+
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS species (
+#         id INTEGER PRIMARY KEY,
+#         name TEXT UNIQUE
+#     )
+#     """)
+
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS roles (
+#         id INTEGER PRIMARY KEY,
+#         name TEXT UNIQUE
+#     )
+#     """)
+
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS patronuses (
+#         id INTEGER PRIMARY KEY,
+#         name TEXT UNIQUE
+#     )
+#     """)
+
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS genders (
+#         id INTEGER PRIMARY KEY,
+#         name TEXT UNIQUE
+#     )
+#     """)
+
+#     # ------------------ Characters table (normalized) ------------------
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS characters (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         name TEXT UNIQUE,
+#         house_id INTEGER,
+#         species_id INTEGER,
+#         role_id INTEGER,
+#         patronus_id INTEGER,
+#         gender_id INTEGER,
+#         age INTEGER,
+#         alt_names TEXT,
+#         FOREIGN KEY(house_id) REFERENCES houses(id),
+#         FOREIGN KEY(species_id) REFERENCES species(id),
+#         FOREIGN KEY(role_id) REFERENCES roles(id),
+#         FOREIGN KEY(patronus_id) REFERENCES patronuses(id),
+#         FOREIGN KEY(gender_id) REFERENCES genders(id)
+#     )
+#     """)
+
+#     # ------------------ Character ↔ Video join ------------------
+#     cur.execute("""
+#     CREATE TABLE IF NOT EXISTS character_mentions (
+#         id INTEGER PRIMARY KEY AUTOINCREMENT,
+#         character_ref INTEGER,
+#         video_id INTEGER,
+#         mention_count INTEGER,
+#         FOREIGN KEY(character_ref) REFERENCES characters(id),
+#         FOREIGN KEY(video_id) REFERENCES videos(id)
+#     )
+#     """)
+
+#     conn.commit()
+
+# def get_final_channel_id(conn: sqlite3.Connection, channel_id: str) -> Optional[int]:
+#     cur = conn.cursor()
+#     cur.execute("SELECT id FROM channels WHERE channel_id = ?", (channel_id,))
+#     r = cur.fetchone()
+#     return r[0] if r else None
+
+# def upsert_final_channel(conn: sqlite3.Connection, channel_id: str, title: Optional[str], subs: Optional[int]) -> int:
+#     cur = conn.cursor()
+#     # insert or update
+#     cur.execute(
+#     """
+#     INSERT INTO channels(channel_id, title, subscriber_count)
+#     VALUES(?, ?, ?)
+#     ON CONFLICT(channel_id) DO UPDATE SET title=excluded.title, subscriber_count=excluded.subscriber_count
+#     """,
+#     (channel_id, title, subs)
+#     )
+#     conn.commit()
+#     return get_final_channel_id(conn, channel_id)
+
+# def fetch_unimported_videos_from_source(src_conn: sqlite3.Connection, final_conn: sqlite3.Connection, limit: int) -> List[Dict]:
+#     """Return up to `limit` video rows from source that are not yet in final (by video_id).
+#         The function expects the source DB to have tables named `channels` and `videos`
+#         with a schema similar to the one used in the youtube fetcher (channel_id available).
+#     """
+#     src_cur = src_conn.cursor()
+#     # Attempt to select videos that final doesn't have yet
+#     query = (
+#             "SELECT v.*, "
+#             "c.channel_id AS source_channel_id, "
+#             "c.title AS source_channel_title, "
+#             "c.subscriber_count AS source_channel_subs "
+#             "FROM videos v "
+#             "JOIN channels c ON v.channel_ref = c.id "
+#             "WHERE NOT EXISTS ("
+#             "    SELECT 1 FROM final.videos f WHERE f.video_id = v.video_id"
+#             ") "
+#             "LIMIT ?"
+#         )
+#     # Note: we'll attach final DB as 'main' when opening connections so this subquery works.
+#     src_cur.execute(query, (limit,))
+#     cols = [d[0] for d in src_cur.description]
+#     rows = src_cur.fetchall()
+#     result = []
+#     for r in rows:
+#         result.append({cols[i]: r[i] for i in range(len(cols))})
+#     return result
+
+# def import_youtube_from_source(src_db_path: str, final_db_path: str, limit: int = 25) -> None:
+#     """Import up to `limit` new videos from src_db_path into final_db_path."""
+#     src_conn = sqlite3.connect(src_db_path)
+#     final_conn = sqlite3.connect(final_db_path)
+
+#     # Attach final DB inside the source connection so the query can reference final.videos
+#     src_conn.execute(f"ATTACH DATABASE '{final_db_path}' AS final")
+
+#     create_final_schema(final_conn)
+
+#     # Fetch videos that are not already in final
+#     videos = fetch_unimported_videos_from_source(src_conn, final_conn, limit)
+#     if not videos:
+#         print("No new videos to import from source.")
+#         src_conn.close()
+#         final_conn.close()
+#         return
+
+#     fcur = final_conn.cursor()
+#     inserted = 0
+
+#     for v in videos:
+#         vid = v.get('video_id')
+#         title = v.get('title')
+#         duration = v.get('duration_seconds') if 'duration_seconds' in v else v.get('duration')
+#         published = v.get('published_at') if 'published_at' in v else v.get('publishedAt')
+
+#         # channel mapping
+#         source_channel_id = v.get('source_channel_id')
+#         source_channel_title = v.get('source_channel_title')
+#         source_subs = v.get('source_channel_subs')
+
+#         final_channel_row_id = get_final_channel_id(final_conn, source_channel_id)
+#         if final_channel_row_id is None:
+#             final_channel_row_id = upsert_final_channel(
+#                 final_conn, source_channel_id, source_channel_title, source_subs
+#             )
+
+#         try:
+#             fcur.execute(
+#                 "INSERT INTO videos(video_id, channel_ref, title, duration_seconds, published_at) VALUES (?, ?, ?, ?, ?)",
+#                 (vid, final_channel_row_id, title, duration, published)
+#             )
+#             final_vid_id = fcur.lastrowid
+
+#             # Stats
+#             view_count = v.get('view_count') or v.get('viewCount') or 0
+#             like_count = v.get('like_count') or v.get('likeCount') or 0
+#             comment_count = v.get('comment_count') or v.get('commentCount') or 0
+#             view_like_ratio = (float(view_count) / float(like_count)) if like_count else None
+
+#             fcur.execute(
+#                 "INSERT OR REPLACE INTO video_stats(video_ref, view_count, like_count, comment_count, view_like_ratio) VALUES (?, ?, ?, ?, ?)",
+#                 (final_vid_id, view_count, like_count, comment_count, view_like_ratio)
+#             )
+
+#             final_conn.commit()
+#             inserted += 1
+
+#         except sqlite3.IntegrityError:
+#             continue
+
+#     print(f"Imported {inserted} videos into {final_db_path} from {src_db_path}.")
+#     src_conn.close()
+#     final_conn.close()
+
+
+
+
+# # def import_hp_placeholder(hp_db_path: str, final_db_path: str, limit: int = 25): 
+# #     """Placeholder for importing HP data from partner DB."""
+# #     #gets data from fetch harry potter!! so it copies 25 characters from the database into the final joined database. CHAT WE ARE MERGING!!!!
+# #     hp_conn = sqlite3.connect(hp_db_path)
+# #     final_conn = sqlite3.connect(final_db_path)
+# #     hp_cur = hp_conn.cursor() 
+# #     final_cur = final_conn.cursor() 
+# #     create_final_schema(final_conn)
+# #     try:
+# #         hp_cur.execute("SELECT name, house, species, role, patronus, gender, age, alt_names FROM characters")
+# #     except sqlite3.OperationalError:
+# #         hp_cur.execute("SELECT name, house, species, role, patronus, gender, age, NULL as alt_names FROM characters")
+
+# #     all_hp_rows = hp_cur.fetchall() 
+# #     counter = 0 
+# #     for row in all_hp_rows: 
+# #         if counter >= limit: 
+# #             break 
+# #         name = row[0] 
+# #         final_cur.execute("SELECT id FROM characters WHERE name = ?", (name,))
+# #         existing = final_cur.fetchone() #starts checking for duplicate names 
+# #         if existing: #creates if scenario if the name is already present 
+# #             continue #continues to not include duplicate names hehehe
+# #         house = row[1]
+# #         species = row[2]
+# #         role = row[3]
+# #         patronus = row[4]
+# #         gender = row[5] 
+# #         age = row[6]
+# #         alt_names = row[7]
+# #         final_cur.execute("""INSERT INTO characters(name, house, species, role, patronus, gender, age, alt_names)VALUES(?,?,?,?,?,?,?,?)""", (name, house, species, role, patronus, gender, age, alt_names,)) 
+# #         final_conn.commit() 
+# #         counter += 1 
+# #     hp_conn.close()
+# #     final_conn.close() 
+# #     #safety printing confirmation, currently manifesting this stuff works please omg 
+# #     print(f"imported{counter} hp characters into combined base")
+# #     print("run until all copied into final")
+
+
+
+
+# #     pass
+# def import_hp_placeholder(hp_db_path: str, final_db_path: str, limit: int = 25):
+#     hp_conn = sqlite3.connect(hp_db_path)
+#     final_conn = sqlite3.connect(final_db_path)
+
+#     hp_cur = hp_conn.cursor()
+#     final_cur = final_conn.cursor()
+
+#     create_final_schema(final_conn)
+
+#     # Pull normalized HP data
+#     hp_cur.execute("""
+#         SELECT
+#             c.name,
+#             c.house_id,
+#             c.species_id,
+#             c.role_id,
+#             c.patronus_id,
+#             c.gender_id,
+#             c.age,
+#             c.alternate_names
+#         FROM characters c
+#     """)
+
+#     rows = hp_cur.fetchall()
+#     counter = 0
+
+#     for row in rows:
+#         if counter >= limit:
+#             break
+
+#         (
+#             name,
+#             house_id,
+#             species_id,
+#             role_id,
+#             patronus_id,
+#             gender_id,
+#             age,
+#             alt_names
+#         ) = row
+
+#         # prevent duplicate characters
+#         final_cur.execute("SELECT id FROM characters WHERE name = ?", (name,))
+#         if final_cur.fetchone():
+#             continue
+
+#         final_cur.execute("""
+#             INSERT INTO characters (
+#                 name, house_id, species_id, role_id,
+#                 patronus_id, gender_id, age, alt_names
+#             )
+#             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+#         """, (
+#             name,
+#             house_id,
+#             species_id,
+#             role_id,
+#             patronus_id,
+#             gender_id,
+#             age,
+#             alt_names
+#         ))
+
+#         final_conn.commit()
+#         counter += 1
+
+#     hp_conn.close()
+#     final_conn.close()
+
+#     print(f"Imported {counter} HP characters into combined database.")
+#     print("Run until all characters are copied.")
+
+
+# def build_char_mentions(final_db_path: str):
+#     conn = sqlite3.connect(final_db_path)
+#     cur = conn.cursor()
+#     # Load characters + videos
+#     cur.execute("SELECT id, name FROM characters")
+#     characters = cur.fetchall()
+#     cur.execute("SELECT id, title FROM videos")
+#     videos = cur.fetchall()
+
+#     added = 0
+
+#     for char_id, name in characters:
+#         if not name:
+#             continue
+#         name_lower = name.lower()
+#         for video_id, title in videos:
+#             if not title:
+#                 continue
+#             if name_lower in title.lower():
+#                 # Avoid duplicates
+#                 cur.execute("""
+#                     SELECT id FROM character_mentions
+#                     WHERE character_ref = ? AND video_id = ?
+#                 """, (char_id, video_id))
+#                 if cur.fetchone():
+#                     continue
+#                 cur.execute("""
+#                     INSERT INTO character_mentions(character_ref, video_id, mention_count)
+#                     VALUES (?, ?, 1)
+#                 """, (char_id, video_id))
+#                 added += 1
+
+#     conn.commit()
+#     conn.close()
+
+#     print(f"✓ character_mentions table updated ({added} new rows)")
+
+
+
+# # ------------- calculations for both (placeholder start) ------------------
+
+# def calc_character_popularity(final_db_path: str):
+#     """
+#     Counts how many YouTube videos mention each Harry Potter character in the title,
+#     and sums the view_count for those videos.
+#     """
+#     conn = sqlite3.connect(final_db_path)
+#     cur = conn.cursor()
+
+#     # Get all HP characters
+#     cur.execute("SELECT id, name FROM characters")
+#     characters = cur.fetchall()
+
+#     results = {}
+
+#     for char_id, name in characters:
+#         if not name:
+#             continue
+
+#         name_lower = f"%{name.lower()}%"
+
+#         # Find all video IDs where the title contains this character's name
+#         cur.execute("""
+#             SELECT v.id
+#             FROM videos v
+#             WHERE lower(v.title) LIKE ?
+#         """, (name_lower,))
+#         matching_videos = cur.fetchall()
+
+#         # Count how many titles mention the character
+#         mention_count = len(matching_videos)
+
+#         # Sum up total views from video_stats
+#         total_views = 0
+#         for (vid_id,) in matching_videos:
+#             cur.execute("""
+#                 SELECT view_count
+#                 FROM video_stats
+#                 WHERE video_ref = ?
+#             """, (vid_id,))
+#             stat = cur.fetchone()
+#             if stat and stat[0]:
+#                 total_views += stat[0]
+
+#         results[name] = {
+#             "mentions": mention_count,
+#             "views": total_views
+#         }
+
+#     conn.close()
+#     return results
+
+
+
+# def calc_character_appearances_in_yt_videotitle(final_db_path: str):
+#     conn = sqlite3.connect(final_db_path)
+#     cur = conn.cursor()
+
+#     cur.execute("SELECT id, name FROM characters")
+#     characters = cur.fetchall()
+
+#     cur.execute("SELECT id, title FROM videos")
+#     videos = cur.fetchall()
+
+#     conn.close()
+
+#     results = []
+
+#     for char_id, name in characters:
+#         if not name:
+#             continue
+
+#         name_lower = name.lower()
+#         count = sum(
+#             1 for _, title in videos
+#             if title and name_lower in title.lower()
+#         )
+
+#         results.append((name, count))
+
+#     results.sort(key=lambda x: x[1], reverse=True)
+#     return results
+
+
+# # -------------------- Return Calc to TXT files --------------------
+
+# def export_calculations_to_txt(db_path="combined.db", output_file="hp_stats.txt"):
+#     conn = sqlite3.connect(db_path)
+#     stats = calc_character_popularity(db_path)
+
+#     with open(output_file, "w", encoding="utf-8") as f:
+#         for name, info in stats.items():
+#             f.write(f"{name}\n")
+#             f.write(f"  Mentions in video titles: {info['mentions']}\n")
+#             f.write(f"  Total views of those videos: {info['views']}\n\n")
+
+#     conn.close()
+#     print(f"TXT generated: {output_file}")
+
+
+
+
+
+# # ------------------ Main script ------------------
+
+# def main():
+#     import argparse
+
+#     DB_PATH = "combined.db"
+
+#     p = argparse.ArgumentParser("combined builder")
+#     p.add_argument("--youtube-src", required=True)
+#     p.add_argument("--import-hp", default=None)
+#     p.add_argument("--limit", type=int, default=25)
+#     args = p.parse_args()
+
+#     if args.limit < 1 or args.limit > 25:
+#         raise SystemExit("limit must be between 1 and 25")
+
+#     import_youtube_from_source(args.youtube_src, DB_PATH, args.limit)
+
+#     if args.import_hp:
+#         import_hp_placeholder(args.import_hp, DB_PATH, args.limit)
+
+#     export_calculations_to_txt(DB_PATH, "hp_stats.txt")
+#     build_char_mentions(DB_PATH)
+#     print("All done! 'hp_stats.txt' has been generated.")
+
+
+# if __name__ == '__main__':
+#     main()
 
 def create_final_schema(conn: sqlite3.Connection):
     cur = conn.cursor()
+
+    # ---------- YouTube tables ----------
     cur.execute("""
     CREATE TABLE IF NOT EXISTS channels (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -17,7 +592,7 @@ def create_final_schema(conn: sqlite3.Connection):
     """)
 
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS videos (
+    CREATE TABLE IF NOT EXISTS videos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         video_id TEXT UNIQUE,
         channel_ref INTEGER,
@@ -29,7 +604,7 @@ def create_final_schema(conn: sqlite3.Connection):
     """)
 
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS video_stats (
+    CREATE TABLE IF NOT EXISTS video_stats (
         video_ref INTEGER PRIMARY KEY,
         view_count INTEGER,
         like_count INTEGER,
@@ -39,20 +614,63 @@ def create_final_schema(conn: sqlite3.Connection):
     )
     """)
 
+    # ---------- HP lookup tables ----------
     cur.execute("""
-        CREATE TABLE IF NOT EXISTS characters (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        character_id TEXT UNIQUE,
-        name TEXT,
-        house TEXT,
-        alt_names TEXT,
-        species TEXT,
-        role TEXT,
-        patronus TEXT,
-        gender TEXT,
-        age TEXT
+    CREATE TABLE IF NOT EXISTS houses (
+        id INTEGER PRIMARY KEY,
+        name TEXT UNIQUE
     )
     """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS species (
+        id INTEGER PRIMARY KEY,
+        name TEXT UNIQUE
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS roles (
+        id INTEGER PRIMARY KEY,
+        name TEXT UNIQUE
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS patronuses (
+        id INTEGER PRIMARY KEY,
+        name TEXT UNIQUE
+    )
+    """)
+
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS genders (
+        id INTEGER PRIMARY KEY,
+        name TEXT UNIQUE
+    )
+    """)
+
+    # ---------- Characters ----------
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS characters (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT UNIQUE,
+        house_id INTEGER,
+        species_id INTEGER,
+        role_id INTEGER,
+        patronus_id INTEGER,
+        gender_id INTEGER,
+        age INTEGER,
+        alt_names TEXT,
+        FOREIGN KEY(house_id) REFERENCES houses(id),
+        FOREIGN KEY(species_id) REFERENCES species(id),
+        FOREIGN KEY(role_id) REFERENCES roles(id),
+        FOREIGN KEY(patronus_id) REFERENCES patronuses(id),
+        FOREIGN KEY(gender_id) REFERENCES genders(id)
+    )
+    """)
+
+    # ---------- Join table ----------
     cur.execute("""
     CREATE TABLE IF NOT EXISTS character_mentions (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -63,112 +681,90 @@ def create_final_schema(conn: sqlite3.Connection):
         FOREIGN KEY(video_id) REFERENCES videos(id)
     )
     """)
-    
+
     conn.commit()
 
-def get_final_channel_id(conn: sqlite3.Connection, channel_id: str) -> Optional[int]:
+
+# ==================================================
+# YOUTUBE IMPORT HELPERS
+# ==================================================
+def get_final_channel_id(conn, channel_id):
     cur = conn.cursor()
     cur.execute("SELECT id FROM channels WHERE channel_id = ?", (channel_id,))
     r = cur.fetchone()
     return r[0] if r else None
 
-def upsert_final_channel(conn: sqlite3.Connection, channel_id: str, title: Optional[str], subs: Optional[int]) -> int:
+
+def upsert_final_channel(conn, channel_id, title, subs):
     cur = conn.cursor()
-    # insert or update
-    cur.execute(
-    """
-    INSERT INTO channels(channel_id, title, subscriber_count)
-    VALUES(?, ?, ?)
-    ON CONFLICT(channel_id) DO UPDATE SET title=excluded.title, subscriber_count=excluded.subscriber_count
-    """,
-    (channel_id, title, subs)
-    )
+    cur.execute("""
+        INSERT INTO channels(channel_id, title, subscriber_count)
+        VALUES (?, ?, ?)
+        ON CONFLICT(channel_id)
+        DO UPDATE SET title=excluded.title,
+                      subscriber_count=excluded.subscriber_count
+    """, (channel_id, title, subs))
     conn.commit()
     return get_final_channel_id(conn, channel_id)
 
-def fetch_unimported_videos_from_source(src_conn: sqlite3.Connection, final_conn: sqlite3.Connection, limit: int) -> List[Dict]:
-    """Return up to `limit` video rows from source that are not yet in final (by video_id).
-        The function expects the source DB to have tables named `channels` and `videos`
-        with a schema similar to the one used in the youtube fetcher (channel_id available).
-    """
+
+def fetch_unimported_videos_from_source(src_conn, limit):
     src_cur = src_conn.cursor()
-    # Attempt to select videos that final doesn't have yet
-    query = (
-            "SELECT v.*, "
-            "c.channel_id AS source_channel_id, "
-            "c.title AS source_channel_title, "
-            "c.subscriber_count AS source_channel_subs "
-            "FROM videos v "
-            "JOIN channels c ON v.channel_ref = c.id "
-            "WHERE NOT EXISTS ("
-            "    SELECT 1 FROM final.videos f WHERE f.video_id = v.video_id"
-            ") "
-            "LIMIT ?"
+    src_cur.execute("""
+        SELECT v.*, c.channel_id, c.title, c.subscriber_count
+        FROM videos v
+        JOIN channels c ON v.channel_ref = c.id
+        WHERE NOT EXISTS (
+            SELECT 1 FROM final.videos f WHERE f.video_id = v.video_id
         )
-    # Note: we'll attach final DB as 'main' when opening connections so this subquery works.
-    src_cur.execute(query, (limit,))
+        LIMIT ?
+    """, (limit,))
     cols = [d[0] for d in src_cur.description]
-    rows = src_cur.fetchall()
-    result = []
-    for r in rows:
-        result.append({cols[i]: r[i] for i in range(len(cols))})
-    return result
+    return [dict(zip(cols, r)) for r in src_cur.fetchall()]
 
-def import_youtube_from_source(src_db_path: str, final_db_path: str, limit: int = 25) -> None:
-    """Import up to `limit` new videos from src_db_path into final_db_path."""
-    src_conn = sqlite3.connect(src_db_path)
-    final_conn = sqlite3.connect(final_db_path)
 
-    # Attach final DB inside the source connection so the query can reference final.videos
-    src_conn.execute(f"ATTACH DATABASE '{final_db_path}' AS final")
+def import_youtube_from_source(src_db, final_db, limit=25):
+    src_conn = sqlite3.connect(src_db)
+    final_conn = sqlite3.connect(final_db)
+    src_conn.execute(f"ATTACH DATABASE '{final_db}' AS final")
 
     create_final_schema(final_conn)
 
-    # Fetch videos that are not already in final
-    videos = fetch_unimported_videos_from_source(src_conn, final_conn, limit)
-    if not videos:
-        print("No new videos to import from source.")
-        src_conn.close()
-        final_conn.close()
-        return
-
+    videos = fetch_unimported_videos_from_source(src_conn, limit)
     fcur = final_conn.cursor()
+
     inserted = 0
-
     for v in videos:
-        vid = v.get('video_id')
-        title = v.get('title')
-        duration = v.get('duration_seconds') if 'duration_seconds' in v else v.get('duration')
-        published = v.get('published_at') if 'published_at' in v else v.get('publishedAt')
-
-        # channel mapping
-        source_channel_id = v.get('source_channel_id')
-        source_channel_title = v.get('source_channel_title')
-        source_subs = v.get('source_channel_subs')
-
-        final_channel_row_id = get_final_channel_id(final_conn, source_channel_id)
-        if final_channel_row_id is None:
-            final_channel_row_id = upsert_final_channel(
-                final_conn, source_channel_id, source_channel_title, source_subs
-            )
+        chan_id = upsert_final_channel(
+            final_conn,
+            v["channel_id"],
+            v["title"],
+            v["subscriber_count"]
+        )
 
         try:
-            fcur.execute(
-                "INSERT INTO videos(video_id, channel_ref, title, duration_seconds, published_at) VALUES (?, ?, ?, ?, ?)",
-                (vid, final_channel_row_id, title, duration, published)
-            )
-            final_vid_id = fcur.lastrowid
+            fcur.execute("""
+                INSERT INTO videos(video_id, channel_ref, title,
+                                   duration_seconds, published_at)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                v["video_id"], chan_id,
+                v.get("title"),
+                v.get("duration_seconds"),
+                v.get("published_at")
+            ))
 
-            # Stats
-            view_count = v.get('view_count') or v.get('viewCount') or 0
-            like_count = v.get('like_count') or v.get('likeCount') or 0
-            comment_count = v.get('comment_count') or v.get('commentCount') or 0
-            view_like_ratio = (float(view_count) / float(like_count)) if like_count else None
+            vid_id = fcur.lastrowid
 
-            fcur.execute(
-                "INSERT OR REPLACE INTO video_stats(video_ref, view_count, like_count, comment_count, view_like_ratio) VALUES (?, ?, ?, ?, ?)",
-                (final_vid_id, view_count, like_count, comment_count, view_like_ratio)
-            )
+            views = v.get("view_count", 0)
+            likes = v.get("like_count", 0)
+            comments = v.get("comment_count", 0)
+            ratio = (views / likes) if likes else None
+
+            fcur.execute("""
+                INSERT OR REPLACE INTO video_stats
+                VALUES (?, ?, ?, ?, ?)
+            """, (vid_id, views, likes, comments, ratio))
 
             final_conn.commit()
             inserted += 1
@@ -176,225 +772,166 @@ def import_youtube_from_source(src_db_path: str, final_db_path: str, limit: int 
         except sqlite3.IntegrityError:
             continue
 
-    print(f"Imported {inserted} videos into {final_db_path} from {src_db_path}.")
     src_conn.close()
     final_conn.close()
+    print(f"Imported {inserted} YouTube videos.")
 
 
+# ==================================================
+# HP IMPORT (NORMALIZED)
+# ==================================================
+def copy_lookup_table(src_conn, dst_conn, table):
+    src_cur = src_conn.cursor()
+    dst_cur = dst_conn.cursor()
+
+    src_cur.execute(f"SELECT id, name FROM {table}")
+    for row in src_cur.fetchall():
+        dst_cur.execute(
+            f"INSERT OR IGNORE INTO {table}(id, name) VALUES (?, ?)",
+            row
+        )
+    dst_conn.commit()
 
 
-def import_hp_placeholder(hp_db_path: str, final_db_path: str, limit: int = 25): 
-    """Placeholder for importing HP data from partner DB."""
-    #gets data from fetch harry potter!! so it copies 25 characters from the database into the final joined database. CHAT WE ARE MERGING!!!!
-    hp_conn = sqlite3.connect(hp_db_path)
-    final_conn = sqlite3.connect(final_db_path)
-    hp_cur = hp_conn.cursor() 
-    final_cur = final_conn.cursor() 
+def import_hp(hp_db, final_db, limit=25):
+    hp_conn = sqlite3.connect(hp_db)
+    final_conn = sqlite3.connect(final_db)
+
     create_final_schema(final_conn)
-    try:
-        hp_cur.execute("SELECT name, house, species, role, patronus, gender, age, alt_names FROM characters")
-    except sqlite3.OperationalError:
-        hp_cur.execute("SELECT name, house, species, role, patronus, gender, age, NULL as alt_names FROM characters")
 
-    all_hp_rows = hp_cur.fetchall() 
-    counter = 0 
-    for row in all_hp_rows: 
-        if counter >= limit: 
-            break 
-        name = row[0] 
+    # copy lookup tables first
+    for t in ["houses", "species", "roles", "patronuses", "genders"]:
+        copy_lookup_table(hp_conn, final_conn, t)
+
+    hp_cur = hp_conn.cursor()
+    final_cur = final_conn.cursor()
+
+    hp_cur.execute("""
+        SELECT name, house_id, species_id, role_id,
+               patronus_id, gender_id, age, alternate_names
+        FROM characters
+    """)
+
+    count = 0
+    for row in hp_cur.fetchall():
+        if count >= limit:
+            break
+
+        name = row[0]
         final_cur.execute("SELECT id FROM characters WHERE name = ?", (name,))
-        existing = final_cur.fetchone() #starts checking for duplicate names 
-        if existing: #creates if scenario if the name is already present 
-            continue #continues to not include duplicate names hehehe
-        house = row[1]
-        species = row[2]
-        role = row[3]
-        patronus = row[4]
-        gender = row[5] 
-        age = row[6]
-        alt_names = row[7]
-        final_cur.execute("""INSERT INTO characters(name, house, species, role, patronus, gender, age, alt_names)VALUES(?,?,?,?,?,?,?,?)""", (name, house, species, role, patronus, gender, age, alt_names,)) 
-        final_conn.commit() 
-        counter += 1 
+        if final_cur.fetchone():
+            continue
+
+        final_cur.execute("""
+            INSERT INTO characters
+            (name, house_id, species_id, role_id,
+             patronus_id, gender_id, age, alt_names)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, row)
+
+        final_conn.commit()
+        count += 1
+
     hp_conn.close()
-    final_conn.close() 
-    #safety printing confirmation, currently manifesting this stuff works please omg 
-    print(f"imported{counter} hp characters into combined base")
-    print("run until all copied into final")
+    final_conn.close()
+    print(f"Imported {count} HP characters.")
 
 
-
-
-    pass
-
-def build_char_mentions(final_db_path: str):
-    conn = sqlite3.connect(final_db_path)
+# ==================================================
+# CHARACTER ↔ VIDEO MATCHING
+# ==================================================
+def build_char_mentions(db):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
-    # Load characters + videos
+
     cur.execute("SELECT id, name FROM characters")
-    characters = cur.fetchall()
+    chars = cur.fetchall()
     cur.execute("SELECT id, title FROM videos")
-    videos = cur.fetchall()
+    vids = cur.fetchall()
 
     added = 0
-
-    for char_id, name in characters:
+    for cid, name in chars:
         if not name:
             continue
-        name_lower = name.lower()
-        for video_id, title in videos:
-            if not title:
-                continue
-            if name_lower in title.lower():
-                # Avoid duplicates
+        for vid, title in vids:
+            if title and name.lower() in title.lower():
                 cur.execute("""
-                    SELECT id FROM character_mentions
-                    WHERE character_ref = ? AND video_id = ?
-                """, (char_id, video_id))
+                    SELECT 1 FROM character_mentions
+                    WHERE character_ref=? AND video_id=?
+                """, (cid, vid))
                 if cur.fetchone():
                     continue
                 cur.execute("""
-                    INSERT INTO character_mentions(character_ref, video_id, mention_count)
-                    VALUES (?, ?, 1)
-                """, (char_id, video_id))
+                    INSERT INTO character_mentions
+                    VALUES (NULL, ?, ?, 1)
+                """, (cid, vid))
                 added += 1
 
     conn.commit()
     conn.close()
-
-    print(f"✓ character_mentions table updated ({added} new rows)")
-
+    print(f"✓ character_mentions updated ({added} rows)")
 
 
-# ------------- calculations for both (placeholder start) ------------------
-
-def calc_character_popularity(final_db_path: str):
-    """
-    Counts how many YouTube videos mention each Harry Potter character in the title,
-    and sums the view_count for those videos.
-    """
-    conn = sqlite3.connect(final_db_path)
+# ==================================================
+# CALCULATIONS + EXPORT
+# ==================================================
+def calc_character_popularity(db):
+    conn = sqlite3.connect(db)
     cur = conn.cursor()
 
-    # Get all HP characters
     cur.execute("SELECT id, name FROM characters")
-    characters = cur.fetchall()
-
+    chars = cur.fetchall()
     results = {}
 
-    for char_id, name in characters:
-        if not name:
-            continue
-
-        name_lower = f"%{name.lower()}%"
-
-        # Find all video IDs where the title contains this character's name
+    for cid, name in chars:
         cur.execute("""
-            SELECT v.id
-            FROM videos v
+            SELECT v.id FROM videos v
             WHERE lower(v.title) LIKE ?
-        """, (name_lower,))
-        matching_videos = cur.fetchall()
+        """, (f"%{name.lower()}%",))
+        vids = cur.fetchall()
 
-        # Count how many titles mention the character
-        mention_count = len(matching_videos)
-
-        # Sum up total views from video_stats
-        total_views = 0
-        for (vid_id,) in matching_videos:
+        views = 0
+        for (vid,) in vids:
             cur.execute("""
-                SELECT view_count
-                FROM video_stats
-                WHERE video_ref = ?
-            """, (vid_id,))
-            stat = cur.fetchone()
-            if stat and stat[0]:
-                total_views += stat[0]
+                SELECT view_count FROM video_stats
+                WHERE video_ref=?
+            """, (vid,))
+            r = cur.fetchone()
+            if r and r[0]:
+                views += r[0]
 
-        results[name] = {
-            "mentions": mention_count,
-            "views": total_views
-        }
+        results[name] = {"mentions": len(vids), "views": views}
 
     conn.close()
     return results
 
 
-
-def calc_character_appearances_in_yt_videotitle(final_db_path: str):
-    conn = sqlite3.connect(final_db_path)
-    cur = conn.cursor()
-
-    cur.execute("SELECT id, name FROM characters")
-    characters = cur.fetchall()
-
-    cur.execute("SELECT id, title FROM videos")
-    videos = cur.fetchall()
-
-    conn.close()
-
-    results = []
-
-    for char_id, name in characters:
-        if not name:
-            continue
-
-        name_lower = name.lower()
-        count = sum(
-            1 for _, title in videos
-            if title and name_lower in title.lower()
-        )
-
-        results.append((name, count))
-
-    results.sort(key=lambda x: x[1], reverse=True)
-    return results
-
-
-# -------------------- Return Calc to TXT files --------------------
-
-def export_calculations_to_txt(db_path="combined.db", output_file="hp_stats.txt"):
-    conn = sqlite3.connect(db_path)
-    stats = calc_character_popularity(db_path)
-
-    with open(output_file, "w", encoding="utf-8") as f:
-        for name, info in stats.items():
+def export_calculations(db, out="hp_stats.txt"):
+    stats = calc_character_popularity(db)
+    with open(out, "w", encoding="utf-8") as f:
+        for name, s in stats.items():
             f.write(f"{name}\n")
-            f.write(f"  Mentions in video titles: {info['mentions']}\n")
-            f.write(f"  Total views of those videos: {info['views']}\n\n")
-
-    conn.close()
-    print(f"TXT generated: {output_file}")
+            f.write(f"  Mentions: {s['mentions']}\n")
+            f.write(f"  Views: {s['views']}\n\n")
+    print(f"✓ {out} written")
 
 
-
-
-
-# ------------------ Main script ------------------
-
+# ==================================================
+# MAIN
+# ==================================================
 def main():
-    import argparse
-
-    DB_PATH = "combined.db"
-
-    p = argparse.ArgumentParser("combined builder")
+    p = argparse.ArgumentParser()
     p.add_argument("--youtube-src", required=True)
-    p.add_argument("--import-hp", default=None)
+    p.add_argument("--hp-src", required=True)
     p.add_argument("--limit", type=int, default=25)
     args = p.parse_args()
 
-    if args.limit < 1 or args.limit > 25:
-        raise SystemExit("limit must be between 1 and 25")
+    DB = os.path.join(os.path.dirname(__file__), "combined.db")
 
-    import_youtube_from_source(args.youtube_src, DB_PATH, args.limit)
+    import_youtube_from_source(args.youtube_src, DB, args.limit)
+    import_hp(args.hp_src, DB, args.limit)
+    build_char_mentions(DB)
+    export_calculations(DB)
 
-    if args.import_hp:
-        import_hp_placeholder(args.import_hp, DB_PATH, args.limit)
-
-    export_calculations_to_txt(DB_PATH, "hp_stats.txt")
-    build_char_mentions(DB_PATH)
-    print("All done! 'hp_stats.txt' has been generated.")
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

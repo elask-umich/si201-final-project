@@ -50,6 +50,38 @@ def pie_harry_vs_rest(db_path="combined.db"):
     plt.tight_layout()
     plt.show()
 
+# def pie_harry_vs_rest(db_path="combined.db"):
+#     conn = sqlite3.connect(db_path)
+#     cur = conn.cursor()
+
+#     cur.execute("""
+#         SELECT c.name, COUNT(DISTINCT v.id)
+#         FROM characters c
+#         JOIN videos v
+#           ON lower(v.title) LIKE '%' || lower(c.name) || '%'
+#         GROUP BY c.name
+#     """)
+
+#     rows = cur.fetchall()
+#     conn.close()
+
+#     harry = 0
+#     others = 0
+
+#     for name, cnt in rows:
+#         if name.lower() == "harry potter":
+#             harry = cnt
+#         else:
+#             others += cnt
+
+#     plt.figure(figsize=(7,7))
+#     plt.pie([harry, others],
+#             labels=["Harry Potter", "All Other Characters"],
+#             autopct="%1.1f%%",
+#             startangle=140)
+#     plt.title("Harry Potter vs Others (Title Mentions)")
+#     plt.show()
+
 
 
 def pie_other_characters(db_path="combined.db"):
@@ -107,9 +139,32 @@ def pie_other_characters(db_path="combined.db"):
     plt.tight_layout()
     plt.show()
 
+# def pie_other_characters(db_path="combined.db"):
+#     conn = sqlite3.connect(db_path)
+#     cur = conn.cursor()
 
+#     cur.execute("""
+#         SELECT c.name, COUNT(DISTINCT v.id)
+#         FROM characters c
+#         JOIN videos v
+#           ON lower(v.title) LIKE '%' || lower(c.name) || '%'
+#         WHERE lower(v.title) NOT LIKE '%harry potter%'
+#         GROUP BY c.name
+#         HAVING COUNT(v.id) > 0
+#         ORDER BY COUNT(v.id) DESC
+#         LIMIT 10
+#     """)
 
+#     rows = cur.fetchall()
+#     conn.close()
 
+#     names = [r[0] for r in rows]
+#     counts = [r[1] for r in rows]
+
+#     plt.figure(figsize=(9,9))
+#     plt.pie(counts, labels=names, autopct="%1.1f%%", startangle=140)
+#     plt.title("Other HP Characters Mentioned (No Franchise Bias)")
+#     plt.show()
 
 def plot_character_title_mentions_bar(db_path="combined.db"):
     conn = sqlite3.connect(db_path)
@@ -167,6 +222,41 @@ def plot_character_title_mentions_bar(db_path="combined.db"):
     plt.xticks(rotation=75, ha='right')
     plt.tight_layout()
     plt.show()
+
+# pie_harry_vs_rest("combined.db")
+# pie_other_characters("combined.db")
+# plot_character_title_mentions_bar("combined.db")
+# def plot_character_title_mentions_bar(db_path="combined.db"):
+#     conn = sqlite3.connect(db_path)
+#     cur = conn.cursor()
+
+#     cur.execute("""
+#         SELECT c.name, COUNT(DISTINCT v.id)
+#         FROM characters c
+#         JOIN videos v
+#           ON lower(v.title) LIKE '%' || lower(c.name) || '%'
+#         WHERE lower(v.title) NOT LIKE '%harry potter%'
+#         GROUP BY c.name
+#         HAVING COUNT(v.id) > 0
+#         ORDER BY COUNT(v.id) DESC
+#         LIMIT 15
+#     """)
+
+#     rows = cur.fetchall()
+#     conn.close()
+
+#     names = [r[0] for r in rows]
+#     counts = [r[1] for r in rows]
+
+#     plt.figure(figsize=(14,6))
+#     plt.bar(names, counts)
+#     plt.xticks(rotation=60, ha="right")
+#     plt.ylabel("Mentions in Titles")
+#     plt.title("HP Characters Mentioned in YouTube Titles (Bias Removed)")
+#     plt.tight_layout()
+#     plt.show()
+
+
 
 pie_harry_vs_rest("combined.db")
 pie_other_characters("combined.db")

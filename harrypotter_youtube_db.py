@@ -743,62 +743,116 @@ def fetch_unimported_videos_from_source(source_conn: sqlite3.Connection, limit: 
     return rows
 
 
-def import_youtube_from_source(src_db, final_db, limit=25):
+# def import_youtube_from_source(src_db, final_db, limit=25):
+#     src_conn = sqlite3.connect(src_db)
+#     final_conn = sqlite3.connect(final_db)
+#     src_conn.execute(f"ATTACH DATABASE '{final_db}' AS final")
+
+#     create_final_schema(final_conn)
+
+#     videos = fetch_unimported_videos_from_source(src_conn, limit)
+#     if not videos:
+#         print("No new YouTube videos to import from source.")
+#         src_conn.close()
+#         final_conn.close()
+#         return
+    
+#     fcur = final_conn.cursor()
+
+#     inserted = 0
+#     for v in videos:
+#             chan_id = upsert_final_channel(
+#                 final_conn,
+#                 v["channel_id"],
+#                 v["channel_title"],
+#                 v["subscriber_count"]
+#             )
+
+#             fcur.execute("""
+#                 INSERT INTO videos(video_id, channel_ref, title,
+#                                     duration_seconds, published_at)
+#                 VALUES (?, ?, ?, ?, ?)
+#             """, (
+#                 v["video_id"],
+#                 chan_id,
+#                 v["video_title"] or "",  # <-- THIS ENSURES video_title is used
+#                 v.get("duration_seconds"),
+#                 v.get("published_at")
+#             ))
+
+#             vid_id = fcur.lastrowid
+
+#             views = v.get("view_count", 0)
+#             likes = v.get("like_count", 0)
+#             comments = v.get("comment_count", 0)
+#             ratio = (views / likes) if likes else None
+
+#             fcur.execute("""
+#                 INSERT OR REPLACE INTO video_stats
+#                 VALUES (?, ?, ?, ?, ?)
+#             """, (vid_id, views, likes, comments, ratio))
+
+#             final_conn.commit()
+#             inserted += 1
+
+#     src_conn.close()
+#     final_conn.close()
+#     print(f"Imported {inserted} YouTube videos.")
+
+
+      
+def import_youtube_from_source(src_db: str, final_db: str, limit: int = 25):
     src_conn = sqlite3.connect(src_db)
     final_conn = sqlite3.connect(final_db)
-    src_conn.execute(f"ATTACH DATABASE '{final_db}' AS final")
 
+    src_conn.execute(f"ATTACH DATABASE '{final_db}' AS final")
     create_final_schema(final_conn)
 
     videos = fetch_unimported_videos_from_source(src_conn, limit)
     if not videos:
-        print("No new YouTube videos to import from source.")
-        src_conn.close()
-        final_conn.close()
+        print("No new YouTube videos to import.")
         return
-    
+
     fcur = final_conn.cursor()
 
-    inserted = 0
     for v in videos:
-            chan_id = upsert_final_channel(
-                final_conn,
-                v["channel_id"],
-                v["channel_title"],
-                v["subscriber_count"]
-            )
+        channel_ref = upsert_final_channel(
+            final_conn,
+            v["channel_id"],
+            v["channel_title"],
+            v["subscriber_count"]
+        )
 
-            fcur.execute("""
-                INSERT INTO videos(video_id, channel_ref, title,
-                                    duration_seconds, published_at)
-                VALUES (?, ?, ?, ?, ?)
-            """, (
-                v["video_id"],
-                chan_id,
-                v["video_title"] or "",  # <-- THIS ENSURES video_title is used
-                v.get("duration_seconds"),
-                v.get("published_at")
-            ))
+        # ✅ CRITICAL FIX: use VIDEO title, NOT channel title
+        fcur.execute("""
+            INSERT INTO videos(video_id, channel_ref, title,
+                               duration_seconds, published_at)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            v["video_id"],
+            channel_ref,
+            v["video_title"],   # ✅ THIS LINE FIXES EVERYTHING
+            v["duration_seconds"],
+            v["published_at"]
+        ))
 
-            vid_id = fcur.lastrowid
+        vid_id = fcur.lastrowid
 
-            views = v.get("view_count", 0)
-            likes = v.get("like_count", 0)
-            comments = v.get("comment_count", 0)
-            ratio = (views / likes) if likes else None
+        views = v.get("view_count", 0)
+        likes = v.get("like_count", 0)
+        comments = v.get("comment_count", 0)
+        ratio = (views / likes) if likes else None
 
-            fcur.execute("""
-                INSERT OR REPLACE INTO video_stats
-                VALUES (?, ?, ?, ?, ?)
-            """, (vid_id, views, likes, comments, ratio))
+        fcur.execute("""
+            INSERT OR REPLACE INTO video_stats
+            VALUES (?, ?, ?, ?, ?)
+        """, (vid_id, views, likes, comments, ratio))
 
-            final_conn.commit()
-            inserted += 1
+        final_conn.commit()
 
     src_conn.close()
     final_conn.close()
-    print(f"Imported {inserted} YouTube videos.")
-
+    print("YouTube videos imported correctly.")
 
 # ==================================================
 # HP IMPORT (NORMALIZED)

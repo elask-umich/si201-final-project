@@ -1,24 +1,4 @@
-Adalbert Waffling
-  Mentions: 0
-  Views: 0
-
-Albus Dumbledore
-  Mentions: 0
-  Views: 0
-
-Argus Filch
-  Mentions: 0
-  Views: 0
-
-Arsenius Jigger
-  Mentions: 0
-  Views: 0
-
 Arthur Weasley
-  Mentions: 0
-  Views: 0
-
-Bathilda Bagshot
   Mentions: 0
   Views: 0
 
@@ -26,27 +6,7 @@ Bellatrix Lestrange
   Mentions: 0
   Views: 0
 
-Bill Weasley
-  Mentions: 0
-  Views: 0
-
-Blaise Zabini
-  Mentions: 0
-  Views: 0
-
-Bloody Baron
-  Mentions: 0
-  Views: 0
-
-Boa constrictor
-  Mentions: 0
-  Views: 0
-
 Cedric Diggory
-  Mentions: 1
-  Views: 56919
-
-Charlie Weasley
   Mentions: 0
   Views: 0
 
@@ -54,19 +14,7 @@ Cho Chang
   Mentions: 0
   Views: 0
 
-Cuthbert Binns
-  Mentions: 0
-  Views: 0
-
-Dennis
-  Mentions: 0
-  Views: 0
-
 Dolores Umbridge
-  Mentions: 0
-  Views: 0
-
-Doris Crockford
   Mentions: 0
   Views: 0
 
@@ -74,51 +22,7 @@ Draco Malfoy
   Mentions: 0
   Views: 0
 
-Dudley Dursley
-  Mentions: 0
-  Views: 0
-
-Emeric Switch
-  Mentions: 0
-  Views: 0
-
-Emeric the Evil
-  Mentions: 0
-  Views: 0
-
-Errol
-  Mentions: 0
-  Views: 0
-
-Fat Friar
-  Mentions: 0
-  Views: 0
-
-Fat Lady
-  Mentions: 0
-  Views: 0
-
-Fawkes
-  Mentions: 0
-  Views: 0
-
-Fred Weasley
-  Mentions: 0
-  Views: 0
-
-Garrick Ollivander
-  Mentions: 0
-  Views: 0
-
-George Weasley
-  Mentions: 0
-  Views: 0
-
 Ginny Weasley
-  Mentions: 0
-  Views: 0
-
-Gordon
   Mentions: 0
   Views: 0
 
@@ -126,25 +30,9 @@ Gregory Goyle
   Mentions: 0
   Views: 0
 
-Griphook
-  Mentions: 0
-  Views: 0
-
-Hannah Abbott
-  Mentions: 0
-  Views: 0
-
 Harry Potter
-  Mentions: 190
-  Views: 26198374
-
-Hedwig
-  Mentions: 0
-  Views: 0
-
-Hermes
-  Mentions: 0
-  Views: 0
+  Mentions: 17
+  Views: 1034736
 
 Hermione Granger
   Mentions: 0
@@ -154,35 +42,7 @@ Horace Slughorn
   Mentions: 0
   Views: 0
 
-James Potter
-  Mentions: 0
-  Views: 0
-
-Justin Finch-Fletchley
-  Mentions: 0
-  Views: 0
-
 Kingsley Shacklebolt
-  Mentions: 0
-  Views: 0
-
-Lavender Brown
-  Mentions: 0
-  Views: 0
-
-Lee Jordan
-  Mentions: 0
-  Views: 0
-
-Lily Moon
-  Mentions: 0
-  Views: 0
-
-Lily Potter
-  Mentions: 0
-  Views: 0
-
-Lisa Turpin
   Mentions: 0
   Views: 0
 
@@ -198,43 +58,7 @@ Luna Lovegood
   Mentions: 0
   Views: 0
 
-Madam Malkin
-  Mentions: 0
-  Views: 0
-
-Madam Pomfrey
-  Mentions: 0
-  Views: 0
-
-Malcolm
-  Mentions: 0
-  Views: 0
-
-Mandy Brocklehurst
-  Mentions: 0
-  Views: 0
-
-Marge Dursley
-  Mentions: 0
-  Views: 0
-
-Millicent Bulstrode
-  Mentions: 0
-  Views: 0
-
 Minerva McGonagall
-  Mentions: 0
-  Views: 0
-
-Miranda Gaushawk
-  Mentions: 0
-  Views: 0
-
-Molly Weasley
-  Mentions: 0
-  Views: 0
-
-Morag MacDougal
   Mentions: 0
   Views: 0
 
@@ -242,95 +66,15 @@ Mr Crabbe
   Mentions: 0
   Views: 0
 
-Mr Finnigan
-  Mentions: 0
-  Views: 0
-
 Mr Goyle
   Mentions: 0
   Views: 0
 
-Mr Nott
-  Mentions: 0
-  Views: 0
-
-Mrs Figg
-  Mentions: 0
-  Views: 0
-
-Mrs Finnigan
-  Mentions: 0
-  Views: 0
-
-Mrs Norris
-  Mentions: 0
-  Views: 0
-
-Nearly Headless Nick
-  Mentions: 0
-  Views: 0
-
 Neville Longbottom
-  Mentions: 1
-  Views: 19186
-
-Newt Scamander
-  Mentions: 0
-  Views: 0
-
-Padma Patil
-  Mentions: 0
-  Views: 0
-
-Pansy Parkinson
-  Mentions: 0
-  Views: 0
-
-Parvati Patil
-  Mentions: 0
-  Views: 0
-
-Peeves
-  Mentions: 0
-  Views: 0
-
-Percy Weasley
-  Mentions: 0
-  Views: 0
-
-Petunia Dursley
-  Mentions: 0
-  Views: 0
-
-Phyllida Spore
-  Mentions: 0
-  Views: 0
-
-Piers Polkiss
-  Mentions: 0
-  Views: 0
-
-Pigwidgeon
-  Mentions: 0
-  Views: 0
-
-Pomona Sprout
-  Mentions: 0
-  Views: 0
-
-Quentin Trimble
-  Mentions: 0
-  Views: 0
-
-Quirinus Quirrel
   Mentions: 0
   Views: 0
 
 Remus Lupin
-  Mentions: 0
-  Views: 0
-
-Ripper
   Mentions: 0
   Views: 0
 
@@ -339,62 +83,18 @@ Ron Weasley
   Views: 0
 
 Rubeus Hagrid
-  Mentions: 1
-  Views: 126554
-
-Sally-Anne Perks
-  Mentions: 0
-  Views: 0
-
-Seamus Finnigan
   Mentions: 0
   Views: 0
 
 Severus Snape
-  Mentions: 1
-  Views: 68159
+  Mentions: 0
+  Views: 0
 
 Sirius Black
   Mentions: 0
   Views: 0
 
-Susan Bones
-  Mentions: 0
-  Views: 0
-
-Terry Boot
-  Mentions: 0
-  Views: 0
-
-The Wailing Widow
-  Mentions: 0
-  Views: 0
-
-Theodore Nott
-  Mentions: 0
-  Views: 0
-
-Tom
-  Mentions: 1
-  Views: 19186
-
-Trevor
-  Mentions: 0
-  Views: 0
-
-Vernon Dursley
-  Mentions: 0
-  Views: 0
-
 Vincent Crabbe
-  Mentions: 0
-  Views: 0
-
-Vindictus Viridian
-  Mentions: 0
-  Views: 0
-
-Yvonne
   Mentions: 0
   Views: 0
 

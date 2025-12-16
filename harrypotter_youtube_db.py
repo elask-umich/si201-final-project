@@ -946,7 +946,7 @@ def build_char_mentions(db):
 
     conn.commit()
     conn.close()
-    print(f"✓ character_mentions updated ({added} rows)")
+    print(f"character_mentions updated ({added} rows)")
 
 
 # ==================================================
@@ -982,15 +982,62 @@ def calc_character_popularity(db):
     conn.close()
     return results
 
+def calc_character_appearances_in_yt_videotitle(db_path: str):
+    """
+    Counts how many YouTube video titles mention each HP character.
+    Returns a sorted list of (character, count).
+    """
+    conn = sqlite3.connect(db_path)
+    cur = conn.cursor()
 
-def export_calculations(db, out="hp_stats.txt"):
-    stats = calc_character_popularity(db)
-    with open(out, "w", encoding="utf-8") as f:
-        for name, s in stats.items():
+    cur.execute("SELECT id, name FROM characters")
+    characters = cur.fetchall()
+
+    cur.execute("SELECT title FROM videos")
+    videos = cur.fetchall()
+
+    conn.close()
+
+    results = []
+
+    for _, name in characters:
+        if not name:
+            continue
+
+        name_lower = name.lower()
+        count = sum(
+            1 for (title,) in videos
+            if title and name_lower in title.lower()
+        )
+
+        results.append((name, count))
+
+    results.sort(key=lambda x: x[1], reverse=True)
+    return results
+
+def export_calculations(db_path: str):
+    """
+    Writes two separate text files:
+    1) hp_character_popularity.txt  (mentions + total views)
+    2) hp_character_mentions.txt    (title mention counts only)
+    """
+
+    # ---- File 1: popularity + views ----
+    popularity = calc_character_popularity(db_path)
+    with open("hp_character_popularity.txt", "w", encoding="utf-8") as f:
+        for name, info in popularity.items():
             f.write(f"{name}\n")
-            f.write(f"  Mentions: {s['mentions']}\n")
-            f.write(f"  Views: {s['views']}\n\n")
-    print(f"✓ {out} written")
+            f.write(f"  Mentions in video titles: {info['mentions']}\n")
+            f.write(f"  Total views of those videos: {info['views']}\n\n")
+
+    # ---- File 2: appearances only ----
+    appearances = calc_character_appearances_in_yt_videotitle(db_path)
+    with open("hp_character_mentions.txt", "w", encoding="utf-8") as f:
+        for name, count in appearances:
+            f.write(f"{name}: {count} mentions\n")
+
+    print("✓ hp_character_popularity.txt written")
+    print("✓ hp_character_mentions.txt written")
 
 
 # ==================================================

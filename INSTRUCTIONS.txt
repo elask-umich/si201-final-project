@@ -6,7 +6,7 @@
 # and/or need to run and add lines to 3. the final combined.db database.
 
 
-# type - python harrypotter_youtube_db.py --youtube-src youtube_db.db --import-hp hp_db.db --limit 25
+# type - python harrypotter_youtube_db.py --youtube-src youtube_db.db --hp-src hp_db.db --limit 25
 
 
 # To see our visualizations, please open the visualization.py file and run it as is

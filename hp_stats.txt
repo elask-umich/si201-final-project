@@ -43,8 +43,8 @@ Boa constrictor
   Views: 0
 
 Cedric Diggory
-  Mentions: 0
-  Views: 0
+  Mentions: 1
+  Views: 56919
 
 Charlie Weasley
   Mentions: 0
@@ -135,8 +135,8 @@ Hannah Abbott
   Views: 0
 
 Harry Potter
-  Mentions: 100
-  Views: 12886917
+  Mentions: 190
+  Views: 26198374
 
 Hedwig
   Mentions: 0
@@ -271,8 +271,8 @@ Nearly Headless Nick
   Views: 0
 
 Neville Longbottom
-  Mentions: 0
-  Views: 0
+  Mentions: 1
+  Views: 19186
 
 Newt Scamander
   Mentions: 0
@@ -339,8 +339,8 @@ Ron Weasley
   Views: 0
 
 Rubeus Hagrid
-  Mentions: 0
-  Views: 0
+  Mentions: 1
+  Views: 126554
 
 Sally-Anne Perks
   Mentions: 0
@@ -351,8 +351,8 @@ Seamus Finnigan
   Views: 0
 
 Severus Snape
-  Mentions: 0
-  Views: 0
+  Mentions: 1
+  Views: 68159
 
 Sirius Black
   Mentions: 0
@@ -375,8 +375,8 @@ Theodore Nott
   Views: 0
 
 Tom
-  Mentions: 0
-  Views: 0
+  Mentions: 1
+  Views: 19186
 
 Trevor
   Mentions: 0
@@ -397,104 +397,4 @@ Vindictus Viridian
 Yvonne
   Mentions: 0
   Views: 0
-
-Bertie Bott
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Dobby
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Kreacher
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Mason
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mrs Mason
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Perkins
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Celestina Warbeck
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Gilderoy Lockhart
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-The Basilisk
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mundungus Fletcher
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Borgin
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mr Granger
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Mrs Granger
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Dr Filibuster
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Colin Creevey
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Gladys Gudgeon
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Veronica Smethley
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Patrick Delaney-Podmore
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Z. Nettles
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-D.J. Prod
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Elsie Prod
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Moaning Myrtle
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Godric Gryffindor
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Rowena Ravenclaw
-  Mentions in video titles: 0
-  Total views of those videos: 0
-
-Helga Hufflepuff
-  Mentions in video titles: 0
-  Total views of those videos: 0
 

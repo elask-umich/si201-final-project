@@ -708,19 +708,39 @@ def upsert_final_channel(conn, channel_id, title, subs):
     return get_final_channel_id(conn, channel_id)
 
 
-def fetch_unimported_videos_from_source(src_conn, limit):
-    src_cur = src_conn.cursor()
-    src_cur.execute("""
-        SELECT v.*, c.channel_id, c.title, c.subscriber_count
+def fetch_unimported_videos_from_source(source_conn: sqlite3.Connection, limit: int) -> list[dict]:
+    source_conn.row_factory = sqlite3.Row
+    cur = source_conn.cursor()
+
+    query = """
+        SELECT
+            v.video_id AS video_id,
+            v.title AS video_title,
+            v.duration_seconds AS duration_seconds,
+            v.published_at AS published_at,
+            v.view_count AS view_count,
+            v.like_count AS like_count,
+            v.comment_count AS comment_count,
+            c.channel_id AS channel_id,
+            c.title AS channel_title,
+            c.subscriber_count AS subscriber_count
         FROM videos v
         JOIN channels c ON v.channel_ref = c.id
         WHERE NOT EXISTS (
-            SELECT 1 FROM final.videos f WHERE f.video_id = v.video_id
+            SELECT 1
+            FROM final.videos fv
+            WHERE fv.video_id = v.video_id
         )
         LIMIT ?
-    """, (limit,))
-    cols = [d[0] for d in src_cur.description]
-    return [dict(zip(cols, r)) for r in src_cur.fetchall()]
+    """
+    cur.execute(query, (limit,))
+    rows = [dict(row) for row in cur.fetchall()]
+
+    # DEBUG: make sure video_title is different from channel_title
+    for r in rows:
+        print(f"VIDEO: {r['video_title']} | CHANNEL: {r['channel_title']}")
+
+    return rows
 
 
 def import_youtube_from_source(src_db, final_db, limit=25):
@@ -731,25 +751,31 @@ def import_youtube_from_source(src_db, final_db, limit=25):
     create_final_schema(final_conn)
 
     videos = fetch_unimported_videos_from_source(src_conn, limit)
+    if not videos:
+        print("No new YouTube videos to import from source.")
+        src_conn.close()
+        final_conn.close()
+        return
+    
     fcur = final_conn.cursor()
 
     inserted = 0
     for v in videos:
-        chan_id = upsert_final_channel(
-            final_conn,
-            v["channel_id"],
-            v["title"],
-            v["subscriber_count"]
-        )
+            chan_id = upsert_final_channel(
+                final_conn,
+                v["channel_id"],
+                v["channel_title"],
+                v["subscriber_count"]
+            )
 
-        try:
             fcur.execute("""
                 INSERT INTO videos(video_id, channel_ref, title,
-                                   duration_seconds, published_at)
+                                    duration_seconds, published_at)
                 VALUES (?, ?, ?, ?, ?)
             """, (
-                v["video_id"], chan_id,
-                v.get("title"),
+                v["video_id"],
+                chan_id,
+                v["video_title"] or "",  # <-- THIS ENSURES video_title is used
                 v.get("duration_seconds"),
                 v.get("published_at")
             ))
@@ -768,9 +794,6 @@ def import_youtube_from_source(src_db, final_db, limit=25):
 
             final_conn.commit()
             inserted += 1
-
-        except sqlite3.IntegrityError:
-            continue
 
     src_conn.close()
     final_conn.close()

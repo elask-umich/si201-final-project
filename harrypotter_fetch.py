@@ -173,18 +173,18 @@ def get_or_create_id(cur, table, value):
 
 # HELPER: NORMALIZE A STRING VALUE
 # --------------------------------------------------
-def get_or_create_id(cur, table, value):
-    if not value:
-        return None
-    cur.execute(
-        f"INSERT OR IGNORE INTO {table} (name) VALUES (?)",
-        (value,)
-    )
-    cur.execute(
-        f"SELECT id FROM {table} WHERE name = ?",
-        (value,)
-    )
-    return cur.fetchone()[0]
+# def get_or_create_id(cur, table, value):
+#     if not value:
+#         return None
+#     cur.execute(
+#         f"INSERT OR IGNORE INTO {table} (name) VALUES (?)",
+#         (value,)
+#     )
+#     cur.execute(
+#         f"SELECT id FROM {table} WHERE name = ?",
+#         (value,)
+#     )
+#     return cur.fetchone()[0]
 
 
 # --------------------------------------------------
